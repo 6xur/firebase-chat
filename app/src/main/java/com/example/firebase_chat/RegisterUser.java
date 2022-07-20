@@ -30,11 +30,9 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
 
         banner = findViewById(R.id.banner);
         banner.setOnClickListener(this);
-
         editTextName = findViewById(R.id.name);
         editTextEmail = findViewById(R.id.email);
         editTextPassword = findViewById(R.id.password);
-
         registerUser = findViewById(R.id.registerUser);
         registerUser.setOnClickListener(this);
     }
