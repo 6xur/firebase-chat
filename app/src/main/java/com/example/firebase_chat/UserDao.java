@@ -28,4 +28,5 @@ public class UserDao implements Dao<User> {
     public Task<Void> delete(User user) {
         return null;
     }
+
 }

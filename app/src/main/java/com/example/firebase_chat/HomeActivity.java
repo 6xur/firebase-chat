@@ -1,18 +1,29 @@
 package com.example.firebase_chat;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.renderscript.Sampler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class HomeActivity extends AppCompatActivity {
 
-    private ListView listView;
-    private String[] names = {"Chris", "Nancy", "Joseph"};
+    private ListView listViewUsers;
+    private ArrayList<String> names = new ArrayList<>(Arrays.asList("danny", "josh"));
     private ArrayAdapter<String> arrayAdapter;
 
     @Override
@@ -20,9 +31,30 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        listView = findViewById(R.id.listView);
+        listViewUsers = findViewById(R.id.listView);
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, names);
-        listView.setAdapter(arrayAdapter);
+        listViewUsers.setAdapter(arrayAdapter);
+
+        // Showing Firebase data in the list view
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://fir-chat-d5a58-default-rtdb.asia-southeast1.firebasedatabase.app");
+        DatabaseReference usersReference = database.getReference("Users");
+        ValueEventListener eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot ds : snapshot.getChildren()){
+                    String name = ds.child("name").getValue(String.class);
+                    String email = ds.child("email").getValue(String.class);
+                    names.add(name);
+                }
+                arrayAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                System.out.println(error.getMessage());
+            }
+        };
+        usersReference.addListenerForSingleValueEvent(eventListener);
     }
 
     @Override
