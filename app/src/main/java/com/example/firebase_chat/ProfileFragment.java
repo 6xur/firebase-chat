@@ -80,8 +80,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     private void uploadPicture(Uri imageUri) {
         // Upload picture to Firebase Storage
-        getActivity().getApplicationContext();
-        StorageReference fileReference = storageReference.child(FirebaseAuth.getInstance().getCurrentUser().getEmail() + ".jpg");
+        StorageReference fileReference = storageReference.child(FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg");
         fileReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {

@@ -53,6 +53,7 @@ public class ChatFragment extends Fragment {
                 for(DataSnapshot ds : snapshot.getChildren()){
                     String name = ds.child("name").getValue(String.class);
                     String email = ds.child("email").getValue(String.class);
+                    String Uid = ds.child("Uid").getValue(String.class);
                     names.add(name);
                 }
                 arrayAdapter.notifyDataSetChanged();

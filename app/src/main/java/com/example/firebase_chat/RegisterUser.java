@@ -88,7 +88,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         // Sign up success
-                        User user = new User(name, email);
+                        User user = new User(name, email, mAuth.getCurrentUser().getUid());
                         userDao.add(user);
                         Toast.makeText(RegisterUser.this, "Registration success.",
                                 Toast.LENGTH_SHORT).show();
