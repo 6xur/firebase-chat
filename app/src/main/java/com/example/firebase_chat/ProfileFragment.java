@@ -87,4 +87,5 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             });
         }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed to upload.", Toast.LENGTH_SHORT).show());
     }
+
 }
