@@ -84,6 +84,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
+                // Get user information
+
                 // Redirect to home page
                 startActivity(new Intent(MainActivity.this, HomeActivity.class));
                 // finish();

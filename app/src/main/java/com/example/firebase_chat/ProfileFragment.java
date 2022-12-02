@@ -10,17 +10,27 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     Uri imageUri;
     ImageView profilePicture;
+    StorageReference storageReference;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -34,12 +44,14 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         profilePicture = view.findViewById(R.id.profilePicture);
         profilePicture.setOnClickListener(this);
 
+        storageReference = FirebaseStorage.getInstance().getReference();
+
         return view;
     }
 
     @Override
     public void onClick(View view) {
-        switch(view.getId()){
+        switch (view.getId()) {
             case R.id.profilePicture:
                 choosePicture();
         }
@@ -57,10 +69,29 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                    if(result.getResultCode() == RESULT_OK){
+                    if (result.getResultCode() == RESULT_OK) {
                         imageUri = result.getData().getData();
                         profilePicture.setImageURI(imageUri);
+
+                        uploadPicture(imageUri);
                     }
                 }
             });
+
+    private void uploadPicture(Uri imageUri) {
+        // Upload picture to Firebase Storage
+        getActivity().getApplicationContext();
+        StorageReference fileReference = storageReference.child(FirebaseAuth.getInstance().getCurrentUser().getEmail() + ".jpg");
+        fileReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(getActivity(), "Profile photo uploaded", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getActivity(), "Failed to upload.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }
