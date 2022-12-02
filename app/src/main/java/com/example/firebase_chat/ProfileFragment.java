@@ -10,7 +10,6 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -19,12 +18,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
@@ -45,7 +42,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         profilePicture = view.findViewById(R.id.profilePicture);
         profilePicture.setOnClickListener(this);
 
+        // Load profile picture from Firebase
         storageReference = FirebaseStorage.getInstance().getReference();
+        StorageReference profileReference = storageReference.child(FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg");
+        profileReference.getDownloadUrl().addOnSuccessListener(uri -> Picasso.get().load(uri).into(profilePicture));
 
         return view;
     }
@@ -80,22 +80,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private void uploadPicture(Uri imageUri) {
         // Upload picture to Firebase Storage
         StorageReference fileReference = storageReference.child(FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg");
-        fileReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(getActivity(), "Profile photo uploaded", Toast.LENGTH_SHORT).show();
-                fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        Picasso.get().load(uri).into(profilePicture);  // load profile pic from Url
-                    }
-                });
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getActivity(), "Failed to upload.", Toast.LENGTH_SHORT).show();
-            }
-        });
+        fileReference.putFile(imageUri).addOnSuccessListener(taskSnapshot -> {
+            Toast.makeText(getActivity(), "Profile photo uploaded", Toast.LENGTH_SHORT).show();
+            fileReference.getDownloadUrl().addOnSuccessListener(uri -> {
+                Picasso.get().load(uri).into(profilePicture);  // update profile pic
+            });
+        }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed to upload.", Toast.LENGTH_SHORT).show());
     }
 }
