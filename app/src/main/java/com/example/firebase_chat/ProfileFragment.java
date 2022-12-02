@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
 
@@ -71,8 +72,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == RESULT_OK) {
                         imageUri = result.getData().getData();
-                        profilePicture.setImageURI(imageUri);
-
                         uploadPicture(imageUri);
                     }
                 }
@@ -85,6 +84,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Toast.makeText(getActivity(), "Profile photo uploaded", Toast.LENGTH_SHORT).show();
+                fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Picasso.get().load(uri).into(profilePicture);  // load profile pic from Url
+                    }
+                });
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
