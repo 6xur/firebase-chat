@@ -1,18 +1,16 @@
 package com.example.firebase_chat;
 
-import androidx.annotation.NonNull;
-
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
+/**
+ * The set method doesn't exist because Firebase loads and synchronises data asynchronously.
+ * To retrieve a Java object, we attach a listener to our database reference.
+ */
 public class UserDao implements Dao<User> {
 
-    public User retrievedUser;
     public final DatabaseReference databaseReference;
 
     public UserDao() {
@@ -34,5 +32,4 @@ public class UserDao implements Dao<User> {
     public Task<Void> delete(User user) {
         return null;
     }
-
 }
