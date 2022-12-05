@@ -19,6 +19,11 @@
             android:src="@drawable/ic_baseline_person_24"
             android:adjustViewBounds="true"
             />
+        
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="750dp"
+            android:text="@string/project_id"/>
 
     </LinearLayout>
 
