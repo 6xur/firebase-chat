@@ -10,16 +10,21 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -28,7 +33,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     Uri imageUri;
     ImageView profilePicture;
+    TextView name;
     StorageReference storageReference;
+
+    User retrievedUser;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -40,12 +48,31 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         profilePicture = view.findViewById(R.id.profilePicture);
+        name = view.findViewById(R.id.name);
         profilePicture.setOnClickListener(this);
 
         // Load profile picture from Firebase
         storageReference = FirebaseStorage.getInstance().getReference();
         StorageReference profileReference = storageReference.child(FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg");
         profileReference.getDownloadUrl().addOnSuccessListener(uri -> Picasso.get().load(uri).into(profilePicture));
+
+        // TODO: load name and other info
+        UserDao userDao = new UserDao();
+        userDao.databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot user: snapshot.getChildren()){
+                    if(user.getKey().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                        retrievedUser = user.getValue(User.class);
+                        name.setText(retrievedUser.name);
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
 
         return view;
     }
