@@ -92,6 +92,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
                         userDao.add(user);
                         Toast.makeText(RegisterUser.this, "Registration success.",
                                 Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(this, MainActivity.class));
                     } else {
                         // If sign up fails, display a message to the user
                         Toast.makeText(RegisterUser.this, "Registration failed.",
