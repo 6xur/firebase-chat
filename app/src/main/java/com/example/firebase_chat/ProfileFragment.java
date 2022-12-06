@@ -34,6 +34,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     Uri imageUri;
     ImageView profilePicture;
     TextView name;
+    TextView editBio;
+    TextView bio;
     StorageReference storageReference;
 
     User retrievedUser;
@@ -49,7 +51,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
         profilePicture = view.findViewById(R.id.profilePicture);
         name = view.findViewById(R.id.name);
+        editBio = view.findViewById(R.id.editBio);
+        bio = view.findViewById(R.id.bio);
+
         profilePicture.setOnClickListener(this);
+        editBio.setOnClickListener(this);
+
 
         // Load profile picture from Firebase
         storageReference = FirebaseStorage.getInstance().getReference();
@@ -65,6 +72,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     if(user.getKey().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
                         retrievedUser = user.getValue(User.class);
                         name.setText(retrievedUser.name);
+
+                        if(retrievedUser.bio != null){
+                            bio.setText(retrievedUser.bio);
+                        }
+
                         break;
                     }
                 }
@@ -82,6 +94,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         switch (view.getId()) {
             case R.id.profilePicture:
                 choosePicture();
+                break;
+            case R.id.editBio:
+                // TODO: add a edit bio page
+                System.out.println("Clicked on editbio");
+                break;
         }
     }
 

@@ -3,6 +3,7 @@ package com.example.firebase_chat;
 public class User {
 
     public String name, email, Uid;
+    public String bio;
 
     public User(){
 
