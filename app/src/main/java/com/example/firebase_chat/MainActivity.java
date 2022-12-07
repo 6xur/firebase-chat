@@ -2,6 +2,7 @@ package com.example.firebase_chat;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        switch(view.getId()){
+        switch (view.getId()) {
             case R.id.register:
                 startActivity(new Intent(this, RegisterUser.class));
                 break;
@@ -58,38 +59,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
-        if(email.isEmpty()){
+        if (email.isEmpty()) {
             editTextEmail.setError("Email cannot be empty.");
             editTextEmail.requestFocus();
             return;
         }
 
-        if(password.isEmpty()){
+        if (password.isEmpty()) {
             editTextPassword.setError("Password cannot be empty.");
             editTextPassword.requestFocus();
             return;
         }
 
-        if(password.length() < 6){
+        if (password.length() < 6) {
             editTextPassword.setError("Password must be at least 6 characters long.");
             editTextPassword.requestFocus();
             return;
         }
 
-        if(!RegisterUser.isValidEmailAddress(email)){
+        if (!RegisterUser.isValidEmailAddress(email)) {
             editTextEmail.setError("Please provide valid Email address.");
             editTextEmail.requestFocus();
             return;
         }
 
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
+            if (task.isSuccessful()) {
                 // Get user information
 
                 // Redirect to home page
                 startActivity(new Intent(MainActivity.this, HomeActivity.class));
                 // finish();
-            } else{
+            } else {
                 Toast.makeText(MainActivity.this, "Failed to login, please check your credentials.", Toast.LENGTH_SHORT).show();
             }
         });
@@ -98,13 +99,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void resetPassword() {
         String email = editTextEmail.getText().toString().trim();
 
-        if(email.isEmpty()){
+        if (email.isEmpty()) {
             editTextEmail.setError("Email is required.");
             editTextEmail.requestFocus();
             return;
         }
 
-        if(!RegisterUser.isValidEmailAddress(email)){
+        if (!RegisterUser.isValidEmailAddress(email)) {
             editTextEmail.setError("Please provide valid Email address.");
             editTextEmail.requestFocus();
             return;
@@ -113,9 +114,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     Toast.makeText(MainActivity.this, "Check your email to reset your password.", Toast.LENGTH_SHORT).show();
-                } else{
+                } else {
                     Toast.makeText(MainActivity.this, "Try again, something went wrong.", Toast.LENGTH_SHORT).show();
                 }
             }

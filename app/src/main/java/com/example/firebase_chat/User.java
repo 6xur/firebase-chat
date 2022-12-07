@@ -5,11 +5,11 @@ public class User {
     public String name, email, Uid;
     public String bio;
 
-    public User(){
+    public User() {
 
     }
 
-    public User(String name, String email, String Uid){
+    public User(String name, String email, String Uid) {
         this.name = name;
         this.email = email;
         this.Uid = Uid;

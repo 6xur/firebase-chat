@@ -28,7 +28,7 @@ public class UserDao implements Dao<User> {
         return null;
     }
 
-    public DatabaseReference getDatabaseReference(){
+    public DatabaseReference getDatabaseReference() {
         return databaseReference;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.firebase_chat;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -8,7 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.regex.Pattern;
 
 public class RegisterUser extends AppCompatActivity implements View.OnClickListener {
@@ -39,7 +42,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        switch(view.getId()){
+        switch (view.getId()) {
             case R.id.banner:
                 startActivity(new Intent(this, MainActivity.class));
                 break;
@@ -54,31 +57,31 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
-        if(name.isEmpty()){
+        if (name.isEmpty()) {
             editTextName.setError("Name cannot be empty.");
             editTextName.requestFocus();
             return;
         }
 
-        if(email.isEmpty()){
+        if (email.isEmpty()) {
             editTextEmail.setError("Email cannot be empty.");
             editTextEmail.requestFocus();
             return;
         }
 
-        if(password.isEmpty()){
+        if (password.isEmpty()) {
             editTextPassword.setError("Password cannot be empty.");
             editTextPassword.requestFocus();
             return;
         }
 
-        if(password.length() < 6){
+        if (password.length() < 6) {
             editTextPassword.setError("Password must be at least 6 characters long.");
             editTextPassword.requestFocus();
             return;
         }
 
-        if(!isValidEmailAddress(email)){
+        if (!isValidEmailAddress(email)) {
             editTextEmail.setError("Please provide valid Email address.");
             editTextEmail.requestFocus();
             return;
@@ -102,7 +105,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     }
 
     public static boolean isValidEmailAddress(String email) {
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." +
                 "[a-zA-Z0-9_+&*-]+)*@" +
                 "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
                 "A-Z]{2,7}$";
