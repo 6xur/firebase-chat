@@ -2,8 +2,8 @@ package com.example.firebase_chat;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -63,39 +63,41 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         profilePicture.setOnClickListener(this);
         editBio.setOnClickListener(this);
 
-
         // Load profile picture from Firebase
         storageReference = FirebaseStorage.getInstance().getReference();
         StorageReference profileReference = storageReference.child(FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg");
         profileReference.getDownloadUrl().addOnSuccessListener(uri -> Picasso.get().load(uri).into(profilePicture));
 
-        // TODO: load name and other info
+        // TODO: load name and other info from Firebase
         userDao = new UserDao();
         userDao.getDatabaseReference().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot user: snapshot.getChildren()){
-                    if(user.getKey().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                for (DataSnapshot user : snapshot.getChildren()) {
+                    if (user.getKey().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                         retrievedUser = user.getValue(User.class);
-                        name.setText(retrievedUser.name);
+                        if (retrievedUser != null) {
+                            name.setText(retrievedUser.name);
 
-                        // If user has bio, load it
-                        if(retrievedUser.bio != null){
-                            bio.setText(retrievedUser.bio);
+                            if (retrievedUser.bio != null) {
+                                bio.setText(retrievedUser.bio);
+                            }
+
                         }
-
                         break;
                     }
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
         });
 
         return view;
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -103,7 +105,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 choosePicture();
                 break;
             case R.id.editBio:
-                // TODO: add a edit bio page
                 updateBio();
                 break;
         }
@@ -133,13 +134,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         StorageReference fileReference = storageReference.child(FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg");
         fileReference.putFile(imageUri).addOnSuccessListener(taskSnapshot -> {
             Toast.makeText(getActivity(), "Profile photo uploaded", Toast.LENGTH_SHORT).show();
-            fileReference.getDownloadUrl().addOnSuccessListener(uri -> {
-                Picasso.get().load(uri).into(profilePicture);  // update profile pic
-            });
-        }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed to upload.", Toast.LENGTH_SHORT).show());
+            fileReference.getDownloadUrl().addOnSuccessListener(uri -> Picasso.get().load(uri).into(profilePicture));
+        }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed to upload", Toast.LENGTH_SHORT).show());
     }
 
-    private void updateBio(){
+    private void updateBio() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Bio");
 
@@ -150,23 +149,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         builder.setView(input);
 
         // Set up the buttons
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener(){
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                // TODO: save to firebase
-                retrievedUser.bio = input.getText().toString();
-                userDao.add(retrievedUser);
-            }
+        builder.setPositiveButton("Ok", (dialogInterface, i) -> {
+            retrievedUser.bio = input.getText().toString();
+            userDao.add(retrievedUser);
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-            }
-        });
+        builder.setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.cancel());
 
         builder.show();
-
     }
 
 }
