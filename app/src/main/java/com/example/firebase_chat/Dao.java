@@ -6,8 +6,6 @@ public interface Dao<T> {
 
     Task<Void> add(T t);
 
-    Task<Void> update(T t);
-
     Task<Void> delete(T t);
 }
 

@@ -24,11 +24,6 @@ public class UserDao implements Dao<User> {
     }
 
     @Override
-    public Task<Void> update(User user) {
-        return databaseReference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user);
-    }
-
-    @Override
     public Task<Void> delete(User user) {
         return null;
     }
