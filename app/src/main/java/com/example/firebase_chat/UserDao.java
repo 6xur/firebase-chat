@@ -11,7 +11,7 @@ import com.google.firebase.database.FirebaseDatabase;
  */
 public class UserDao implements Dao<User> {
 
-    public final DatabaseReference databaseReference;
+    private final DatabaseReference databaseReference;
 
     public UserDao() {
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://fir-chat-d5a58-default-rtdb.asia-southeast1.firebasedatabase.app");
@@ -25,11 +25,15 @@ public class UserDao implements Dao<User> {
 
     @Override
     public Task<Void> update(User user) {
-        return null;
+        return databaseReference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user);
     }
 
     @Override
     public Task<Void> delete(User user) {
         return null;
+    }
+
+    public DatabaseReference getDatabaseReference(){
+        return databaseReference;
     }
 }

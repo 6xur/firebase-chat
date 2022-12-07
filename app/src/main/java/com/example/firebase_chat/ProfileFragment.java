@@ -2,6 +2,8 @@ package com.example.firebase_chat;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,9 +15,11 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +43,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     StorageReference storageReference;
 
     User retrievedUser;
+
+    UserDao userDao;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -64,8 +70,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         profileReference.getDownloadUrl().addOnSuccessListener(uri -> Picasso.get().load(uri).into(profilePicture));
 
         // TODO: load name and other info
-        UserDao userDao = new UserDao();
-        userDao.databaseReference.addValueEventListener(new ValueEventListener() {
+        userDao = new UserDao();
+        userDao.getDatabaseReference().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot user: snapshot.getChildren()){
@@ -73,6 +79,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                         retrievedUser = user.getValue(User.class);
                         name.setText(retrievedUser.name);
 
+                        // If user has bio, load it
                         if(retrievedUser.bio != null){
                             bio.setText(retrievedUser.bio);
                         }
@@ -97,7 +104,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.editBio:
                 // TODO: add a edit bio page
-                System.out.println("Clicked on editbio");
+                updateBio();
                 break;
         }
     }
@@ -130,6 +137,36 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 Picasso.get().load(uri).into(profilePicture);  // update profile pic
             });
         }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed to upload.", Toast.LENGTH_SHORT).show());
+    }
+
+    private void updateBio(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Bio");
+
+        // Set up the input
+        final EditText input = new EditText(getActivity());
+        // Specify the type of input expected
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        // Set up the buttons
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // TODO: save to firebase
+                retrievedUser.bio = input.getText().toString();
+                userDao.add(retrievedUser);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.show();
+
     }
 
 }
