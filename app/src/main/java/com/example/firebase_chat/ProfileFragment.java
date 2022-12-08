@@ -89,7 +89,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
         // Update user info in real time
         userDao = new UserDao();
-        userDao.getDatabaseReference().addValueEventListener(new ValueEventListener() {
+        userDao.getDatabaseRef().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot user : snapshot.getChildren()) {
