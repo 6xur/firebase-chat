@@ -27,9 +27,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthCredential;
-import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -49,7 +46,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     TextView bio;
     TextView phone, email, location;
     LinearLayout phoneContainer, locationContainer;
-    StorageReference storageReference;
+    StorageReference storageRef;
     Button deleteAccountBtn;
 
     User retrievedUser;
@@ -85,10 +82,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         phoneContainer.setVisibility(View.GONE);
         locationContainer.setVisibility(View.GONE);
 
-        // Load profile picture from Firebase
-        storageReference = FirebaseStorage.getInstance().getReference();
-        StorageReference profileReference = storageReference.child(FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg");
-        profileReference.getDownloadUrl().addOnSuccessListener(uri -> Picasso.get().load(uri).into(profilePicture));
+        // Load profile picture from Firebase Storage
+        storageRef = FirebaseStorage.getInstance().getReference();
+        StorageReference profileRef = storageRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg");
+        profileRef.getDownloadUrl().addOnSuccessListener(uri -> Picasso.get().load(uri).into(profilePicture));
 
         // Update user info in real time
         userDao = new UserDao();
@@ -139,7 +136,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.profilePicture:
-                choosePicture();
+                chooseProfilePic();
                 break;
             case R.id.editBio:
                 updateBio();
@@ -154,7 +151,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void choosePicture() {
+    private void chooseProfilePic() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -168,24 +165,24 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == RESULT_OK) {
                         imageUri = result.getData().getData();
-                        uploadPicture(imageUri);
+                        uploadProfilePic(imageUri);
                     }
                 }
             });
 
-    private void uploadPicture(Uri imageUri) {
+    private void uploadProfilePic(Uri imageUri) {
         // Upload picture to Firebase Storage
-        StorageReference fileReference = storageReference.child(FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg");
-        fileReference.putFile(imageUri).addOnSuccessListener(taskSnapshot -> {
+        StorageReference fileRef = storageRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg");
+        fileRef.putFile(imageUri).addOnSuccessListener(taskSnapshot -> {
             Toast.makeText(getActivity(), "Profile photo uploaded", Toast.LENGTH_SHORT).show();
-            fileReference.getDownloadUrl().addOnSuccessListener(uri -> Picasso.get().load(uri).into(profilePicture));
+            fileRef.getDownloadUrl().addOnSuccessListener(uri -> Picasso.get().load(uri).into(profilePicture));
         }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed to upload", Toast.LENGTH_SHORT).show());
     }
 
     // Delete profile pic of current user
-    private void deletePicture(){
-        StorageReference fileReference = storageReference.child(FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg");
-        fileReference.delete();
+    private void deleteProfilePic(){
+        StorageReference fileRef = storageRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg");
+        fileRef.delete();
     }
 
     private void updateBio() {
@@ -260,7 +257,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 switch (i){
                     case DialogInterface.BUTTON_POSITIVE:
                         // Yes button clicked
-                        deletePicture();  // delete profile pic
+                        deleteProfilePic();  // delete profile pic
                         user.delete();  // delete user from Firebase Auth
                         userDao.delete();  // delete user info from realtime database
                         startActivity(new Intent(getActivity(), MainActivity.class));
