@@ -4,6 +4,7 @@ public class User {
 
     public String name, email, Uid;
     public String bio;
+    public String phone, location;
 
     public User() {
 

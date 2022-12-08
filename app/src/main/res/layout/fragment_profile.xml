@@ -127,7 +127,7 @@
 
                 <!--Phone-->
                 <LinearLayout
-                    android:id="@+id/phone"
+                    android:id="@+id/phoneContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -148,10 +148,11 @@
                             android:src="@drawable/ic_baseline_call_24"/>
                         
                         <TextView
+                            android:id="@+id/phone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
-                            android:text="04799 132 932"
+                            android:text="0000 000 000"
                             android:textSize="15sp"/>
 
                     </LinearLayout>
@@ -175,16 +176,18 @@
                         android:src="@drawable/ic_baseline_email_24"/>
                     
                     <TextView
+                        android:id="@+id/email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
-                        android:text="Bobbylee@gmail.com"
+                        android:text="johndoe@gmail.com"
                         android:textSize="15sp"/>
 
                 </LinearLayout>
 
                 <!--Location-->
                 <LinearLayout
+                    android:id="@+id/locationContainer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -200,10 +203,11 @@
                         android:src="@drawable/ic_baseline_location_on_24" />
 
                     <TextView
+                        android:id="@+id/location"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
-                        android:text="Canberra, ACT"
+                        android:text="Earth, Solar System"
                         android:textSize="15sp"/>
 
                 </LinearLayout>

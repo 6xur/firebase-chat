@@ -41,7 +41,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     TextView name;
     TextView editBio;
     TextView bio;
-    LinearLayout phone;
+    TextView phone, email, location;
+    LinearLayout phoneContainer, locationContainer;
     StorageReference storageReference;
 
     User retrievedUser;
@@ -61,13 +62,21 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         name = view.findViewById(R.id.name);
         editBio = view.findViewById(R.id.editBio);
         bio = view.findViewById(R.id.bio);
+
         phone = view.findViewById(R.id.phone);
+        phoneContainer = view.findViewById(R.id.phoneContainer);
+
+        email = view.findViewById(R.id.email);
+
+        location = view.findViewById(R.id.location);
+        locationContainer = view.findViewById(R.id.locationContainer);
 
         profilePicture.setOnClickListener(this);
         editBio.setOnClickListener(this);
 
         // TODO: only display information if saved in FireBase
-        phone.setVisibility(View.GONE);
+        phoneContainer.setVisibility(View.GONE);
+        locationContainer.setVisibility(View.GONE);
 
         // Load profile picture from Firebase
         storageReference = FirebaseStorage.getInstance().getReference();
@@ -84,9 +93,20 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                         retrievedUser = user.getValue(User.class);
                         if (retrievedUser != null) {
                             name.setText(retrievedUser.name);
+                            email.setText(retrievedUser.email);
 
                             if (retrievedUser.bio != null) {
                                 bio.setText(retrievedUser.bio);
+                            }
+
+                            if (retrievedUser.phone != null){
+                                phone.setText(retrievedUser.phone);
+                                phoneContainer.setVisibility(View.VISIBLE);
+                            }
+
+                            if (retrievedUser.location != null){
+                                location.setText(retrievedUser.location);
+                                locationContainer.setVisibility(View.VISIBLE);
                             }
 
                         }
