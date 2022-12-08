@@ -97,17 +97,17 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                                 bio.setText(retrievedUser.bio);
                             }
 
-                            if (retrievedUser.phone != null){
+                            if (retrievedUser.phone != null) {
                                 phone.setText(retrievedUser.phone);
                                 phoneContainer.setVisibility(View.VISIBLE);
-                            } else{
+                            } else {
                                 phoneContainer.setVisibility(View.GONE);
                             }
 
-                            if (retrievedUser.location != null){
+                            if (retrievedUser.location != null) {
                                 location.setText(retrievedUser.location);
                                 locationContainer.setVisibility(View.VISIBLE);
-                            } else{
+                            } else {
                                 locationContainer.setVisibility(View.GONE);
                             }
 
@@ -189,7 +189,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         builder.show();
     }
 
-    private void updateContactInfo(){
+    private void updateContactInfo() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Contact info");
 
@@ -204,25 +204,25 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.addView(phoneInput);
         layout.addView(locationInput);
-        layout.setPadding(50,0,50,0);
+        layout.setPadding(50, 0, 50, 0);
         builder.setView(layout);
 
-        if(retrievedUser.phone != null){
+        if (retrievedUser.phone != null) {
             phoneInput.setText(retrievedUser.phone);
         }
-        if(retrievedUser.location != null){
+        if (retrievedUser.location != null) {
             locationInput.setText(retrievedUser.location);
         }
 
         builder.setPositiveButton("Ok", ((dialogInterface, i) -> {
-            if(phoneInput.getText().toString().length() > 0){
+            if (phoneInput.getText().toString().length() > 0) {
                 retrievedUser.phone = phoneInput.getText().toString();
-            } else{
+            } else {
                 retrievedUser.phone = null;
             }
-            if(locationInput.getText().toString().length() > 0){
+            if (locationInput.getText().toString().length() > 0) {
                 retrievedUser.location = locationInput.getText().toString();
-            } else{
+            } else {
                 retrievedUser.location = null;
             }
             userDao.add(retrievedUser);
