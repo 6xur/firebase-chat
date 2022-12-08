@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +41,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     TextView name;
     TextView editBio;
     TextView bio;
+    LinearLayout phone;
     StorageReference storageReference;
 
     User retrievedUser;
@@ -59,9 +61,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         name = view.findViewById(R.id.name);
         editBio = view.findViewById(R.id.editBio);
         bio = view.findViewById(R.id.bio);
+        phone = view.findViewById(R.id.phone);
 
         profilePicture.setOnClickListener(this);
         editBio.setOnClickListener(this);
+
+        // TODO: only display information if saved in FireBase
+        phone.setVisibility(View.GONE);
 
         // Load profile picture from Firebase
         storageReference = FirebaseStorage.getInstance().getReference();
