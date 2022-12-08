@@ -4,6 +4,7 @@ import static android.app.Activity.RESULT_OK;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,13 +20,18 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -44,6 +50,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     TextView phone, email, location;
     LinearLayout phoneContainer, locationContainer;
     StorageReference storageReference;
+    Button deleteAccountBtn;
 
     User retrievedUser;
     UserDao userDao;
@@ -67,10 +74,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         location = view.findViewById(R.id.location);
         locationContainer = view.findViewById(R.id.locationContainer);
         editContactInfo = view.findViewById(R.id.editContactInfo);
+        deleteAccountBtn = view.findViewById(R.id.deleteAccountBtn);
 
         profilePicture.setOnClickListener(this);
         editBio.setOnClickListener(this);
         editContactInfo.setOnClickListener(this);
+        deleteAccountBtn.setOnClickListener(this);
 
         // Initially invisible, only display these if they are stored in Firebase
         phoneContainer.setVisibility(View.GONE);
@@ -138,6 +147,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             case R.id.editContactInfo:
                 updateContactInfo();
                 break;
+            case R.id.deleteAccountBtn:
+                deleteAccount();  // Delete user from Firebase Auth
+                // TODO: remove profile picture
+                break;
         }
     }
 
@@ -167,6 +180,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             Toast.makeText(getActivity(), "Profile photo uploaded", Toast.LENGTH_SHORT).show();
             fileReference.getDownloadUrl().addOnSuccessListener(uri -> Picasso.get().load(uri).into(profilePicture));
         }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed to upload", Toast.LENGTH_SHORT).show());
+    }
+
+    // Delete profile pic of current user
+    private void deletePicture(){
+        StorageReference fileReference = storageReference.child(FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg");
+        fileReference.delete();
     }
 
     private void updateBio() {
@@ -230,6 +249,34 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         builder.setNegativeButton("Cancel", ((dialogInterface, i) -> dialogInterface.cancel()));
 
         builder.show();
+    }
+
+    private void deleteAccount(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                switch (i){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        // Yes button clicked
+                        deletePicture();  // delete profile pic
+                        user.delete();  // delete user from Firebase Auth
+                        userDao.delete();  // delete user info from realtime database
+                        startActivity(new Intent(getActivity(), MainActivity.class));
+                        Toast.makeText(getActivity(), "Account deleted.",
+                                Toast.LENGTH_SHORT).show();
+                        break;
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        // No button clicked
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();
     }
 
 }

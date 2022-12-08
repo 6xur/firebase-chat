@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         if (!RegisterUser.isValidEmailAddress(email)) {
-            editTextEmail.setError("Please provide valid Email address.");
+            editTextEmail.setError("Please provide a valid Email address.");
             editTextEmail.requestFocus();
             return;
         }
