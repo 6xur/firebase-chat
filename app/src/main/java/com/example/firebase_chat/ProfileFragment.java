@@ -22,12 +22,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -103,11 +100,15 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                             if (retrievedUser.phone != null){
                                 phone.setText(retrievedUser.phone);
                                 phoneContainer.setVisibility(View.VISIBLE);
+                            } else{
+                                phoneContainer.setVisibility(View.GONE);
                             }
 
                             if (retrievedUser.location != null){
                                 location.setText(retrievedUser.location);
                                 locationContainer.setVisibility(View.VISIBLE);
+                            } else{
+                                locationContainer.setVisibility(View.GONE);
                             }
 
                         }
@@ -192,9 +193,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Contact info");
 
-        LinearLayout layout = new LinearLayout(getActivity());
-        layout.setOrientation(LinearLayout.VERTICAL);
-
         EditText phoneInput = new EditText(getActivity());
         phoneInput.setInputType(InputType.TYPE_CLASS_PHONE);
         phoneInput.setHint("Phone");
@@ -202,6 +200,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         EditText locationInput = new EditText(getActivity());
         locationInput.setHint("Location");
 
+        LinearLayout layout = new LinearLayout(getActivity());
+        layout.setOrientation(LinearLayout.VERTICAL);
         layout.addView(phoneInput);
         layout.addView(locationInput);
         layout.setPadding(50,0,50,0);
@@ -217,9 +217,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         builder.setPositiveButton("Ok", ((dialogInterface, i) -> {
             if(phoneInput.getText().toString().length() > 0){
                 retrievedUser.phone = phoneInput.getText().toString();
+            } else{
+                retrievedUser.phone = null;
             }
             if(locationInput.getText().toString().length() > 0){
                 retrievedUser.location = locationInput.getText().toString();
+            } else{
+                retrievedUser.location = null;
             }
             userDao.add(retrievedUser);
         }));
