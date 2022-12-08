@@ -46,7 +46,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     StorageReference storageReference;
 
     User retrievedUser;
-
     UserDao userDao;
 
     public ProfileFragment() {
@@ -62,19 +61,16 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         name = view.findViewById(R.id.name);
         editBio = view.findViewById(R.id.editBio);
         bio = view.findViewById(R.id.bio);
-
         phone = view.findViewById(R.id.phone);
         phoneContainer = view.findViewById(R.id.phoneContainer);
-
         email = view.findViewById(R.id.email);
-
         location = view.findViewById(R.id.location);
         locationContainer = view.findViewById(R.id.locationContainer);
 
         profilePicture.setOnClickListener(this);
         editBio.setOnClickListener(this);
 
-        // TODO: only display information if saved in FireBase
+        // Initially invisible, only display these if they are stored in Firebase
         phoneContainer.setVisibility(View.GONE);
         locationContainer.setVisibility(View.GONE);
 
@@ -83,7 +79,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         StorageReference profileReference = storageReference.child(FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg");
         profileReference.getDownloadUrl().addOnSuccessListener(uri -> Picasso.get().load(uri).into(profilePicture));
 
-        // TODO: load name and other info from Firebase
+        // Update user info in real time
         userDao = new UserDao();
         userDao.getDatabaseReference().addValueEventListener(new ValueEventListener() {
             @Override
