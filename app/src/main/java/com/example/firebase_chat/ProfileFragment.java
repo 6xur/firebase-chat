@@ -22,10 +22,12 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -40,6 +42,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     ImageView profilePicture;
     TextView name;
     TextView editBio;
+    TextView editContactInfo;
     TextView bio;
     TextView phone, email, location;
     LinearLayout phoneContainer, locationContainer;
@@ -66,9 +69,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         email = view.findViewById(R.id.email);
         location = view.findViewById(R.id.location);
         locationContainer = view.findViewById(R.id.locationContainer);
+        editContactInfo = view.findViewById(R.id.editContactInfo);
 
         profilePicture.setOnClickListener(this);
         editBio.setOnClickListener(this);
+        editContactInfo.setOnClickListener(this);
 
         // Initially invisible, only display these if they are stored in Firebase
         phoneContainer.setVisibility(View.GONE);
@@ -129,6 +134,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             case R.id.editBio:
                 updateBio();
                 break;
+            case R.id.editContactInfo:
+                updateContactInfo();
+                break;
         }
     }
 
@@ -176,6 +184,46 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             userDao.add(retrievedUser);
         });
         builder.setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.cancel());
+
+        builder.show();
+    }
+
+    private void updateContactInfo(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Contact info");
+
+        LinearLayout layout = new LinearLayout(getActivity());
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        EditText phoneInput = new EditText(getActivity());
+        phoneInput.setInputType(InputType.TYPE_CLASS_PHONE);
+        phoneInput.setHint("Phone");
+
+        EditText locationInput = new EditText(getActivity());
+        locationInput.setHint("Location");
+
+        layout.addView(phoneInput);
+        layout.addView(locationInput);
+        layout.setPadding(50,0,50,0);
+        builder.setView(layout);
+
+        if(retrievedUser.phone != null){
+            phoneInput.setText(retrievedUser.phone);
+        }
+        if(retrievedUser.location != null){
+            locationInput.setText(retrievedUser.location);
+        }
+
+        builder.setPositiveButton("Ok", ((dialogInterface, i) -> {
+            if(phoneInput.getText().toString().length() > 0){
+                retrievedUser.phone = phoneInput.getText().toString();
+            }
+            if(locationInput.getText().toString().length() > 0){
+                retrievedUser.location = locationInput.getText().toString();
+            }
+            userDao.add(retrievedUser);
+        }));
+        builder.setNegativeButton("Cancel", ((dialogInterface, i) -> dialogInterface.cancel()));
 
         builder.show();
     }
