@@ -1,4 +1,4 @@
-package com.example.firebase_chat;
+package com.example.firebase_chat.utilities;
 
 public class User {
 

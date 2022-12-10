@@ -1,4 +1,4 @@
-package com.example.firebase_chat;
+package com.example.firebase_chat.fragments;
 
 import android.os.Bundle;
 
@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 
+import com.example.firebase_chat.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

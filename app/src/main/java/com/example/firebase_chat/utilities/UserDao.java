@@ -1,5 +1,7 @@
-package com.example.firebase_chat;
+package com.example.firebase_chat.utilities;
 
+import com.example.firebase_chat.utilities.Dao;
+import com.example.firebase_chat.utilities.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;

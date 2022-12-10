@@ -1,10 +1,13 @@
-package com.example.firebase_chat;
+package com.example.firebase_chat.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 
+import com.example.firebase_chat.fragments.ChatFragment;
+import com.example.firebase_chat.fragments.ProfileFragment;
+import com.example.firebase_chat.R;
 import com.example.firebase_chat.databinding.ActivityHomeBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 

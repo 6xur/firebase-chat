@@ -1,4 +1,4 @@
-package com.example.firebase_chat;
+package com.example.firebase_chat.fragments;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -27,6 +27,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.firebase_chat.R;
+import com.example.firebase_chat.utilities.User;
+import com.example.firebase_chat.utilities.UserDao;
+import com.example.firebase_chat.activities.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;

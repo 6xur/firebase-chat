@@ -1,4 +1,4 @@
-package com.example.firebase_chat;
+package com.example.firebase_chat.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.firebase_chat.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.register:
-                startActivity(new Intent(this, RegisterUser.class));
+                startActivity(new Intent(this, RegisterUserActivity.class));
                 break;
             case R.id.login:
                 userLogin();
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
-        if (!RegisterUser.isValidEmailAddress(email)) {
+        if (!RegisterUserActivity.isValidEmailAddress(email)) {
             editTextEmail.setError("Please provide valid Email address.");
             editTextEmail.requestFocus();
             return;
@@ -105,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
-        if (!RegisterUser.isValidEmailAddress(email)) {
+        if (!RegisterUserActivity.isValidEmailAddress(email)) {
             editTextEmail.setError("Please provide a valid Email address.");
             editTextEmail.requestFocus();
             return;

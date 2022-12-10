@@ -1,4 +1,4 @@
-package com.example.firebase_chat;
+package com.example.firebase_chat.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,11 +10,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.firebase_chat.utilities.Dao;
+import com.example.firebase_chat.R;
+import com.example.firebase_chat.utilities.User;
+import com.example.firebase_chat.utilities.UserDao;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.regex.Pattern;
 
-public class RegisterUser extends AppCompatActivity implements View.OnClickListener {
+public class RegisterUserActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView banner;
     private EditText editTextName, editTextEmail, editTextPassword;
@@ -93,12 +97,12 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
                         // Sign up success
                         User user = new User(name, email, mAuth.getCurrentUser().getUid());
                         userDao.add(user);
-                        Toast.makeText(RegisterUser.this, "Registration success.",
+                        Toast.makeText(RegisterUserActivity.this, "Registration success.",
                                 Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(this, MainActivity.class));
                     } else {
                         // If sign up fails, display a message to the user
-                        Toast.makeText(RegisterUser.this, "Registration failed.",
+                        Toast.makeText(RegisterUserActivity.this, "Registration failed.",
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
