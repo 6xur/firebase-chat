@@ -51,6 +51,7 @@ public class ChatFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds : snapshot.getChildren()) {
+                    System.out.println(ds.getKey());
                     String name = ds.child("name").getValue(String.class);
                     String email = ds.child("email").getValue(String.class);
                     String Uid = ds.child("Uid").getValue(String.class);
