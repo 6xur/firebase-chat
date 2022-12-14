@@ -14,8 +14,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.SearchView;
 
 import com.example.firebase_chat.R;
@@ -32,7 +30,6 @@ import java.util.ArrayList;
 public class ChatFragment extends Fragment {
 
     private ArrayList<User> users;
-    private RecyclerView recyclerView;
     private UsersAdapter usersAdapter;
 
     public ChatFragment() {
@@ -46,15 +43,13 @@ public class ChatFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
         setHasOptionsMenu(true);
 
-        recyclerView = view.findViewById(R.id.recyclerView);
+        // Set users adapter
         users = new ArrayList<>();
-
         usersAdapter = new UsersAdapter(users);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
-        recyclerView.setLayoutManager(layoutManager);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(usersAdapter);
-
 
         // Showing Firebase data in the recycler view
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://fir-chat-d5a58-default-rtdb.asia-southeast1.firebasedatabase.app");
@@ -97,6 +92,7 @@ public class ChatFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String s) {
+                // TOOD: usersadapter filter
                 return false;
             }
         });
