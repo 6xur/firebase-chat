@@ -4,6 +4,9 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,6 +19,8 @@ import android.widget.ListView;
 import android.widget.SearchView;
 
 import com.example.firebase_chat.R;
+import com.example.firebase_chat.adapters.UsersAdapter;
+import com.example.firebase_chat.utilities.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,9 +31,9 @@ import java.util.ArrayList;
 
 public class ChatFragment extends Fragment {
 
-    private ListView listViewUsers;
-    private ArrayList<String> names = new ArrayList<>();
-    private ArrayAdapter<String> arrayAdapter;
+    private ArrayList<User> users;
+    private RecyclerView recyclerView;
+    private UsersAdapter usersAdapter;
 
     public ChatFragment() {
         // Required empty public constructor
@@ -41,11 +46,17 @@ public class ChatFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
         setHasOptionsMenu(true);
 
-        listViewUsers = view.findViewById(R.id.listView);
-        arrayAdapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_list_item_1, names);
-        listViewUsers.setAdapter(arrayAdapter);
+        recyclerView = view.findViewById(R.id.recyclerView);
+        users = new ArrayList<>();
 
-        // Showing Firebase data in the list view
+        usersAdapter = new UsersAdapter(users);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(usersAdapter);
+
+
+        // Showing Firebase data in the recycler view
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://fir-chat-d5a58-default-rtdb.asia-southeast1.firebasedatabase.app");
         DatabaseReference usersReference = database.getReference("Users");
         ValueEventListener eventListener = new ValueEventListener() {
@@ -56,9 +67,10 @@ public class ChatFragment extends Fragment {
                     String name = ds.child("name").getValue(String.class);
                     String email = ds.child("email").getValue(String.class);
                     String Uid = ds.child("Uid").getValue(String.class);
-                    names.add(name);
+                    User user = new User(name, email, Uid);
+                    users.add(user);
                 }
-                arrayAdapter.notifyDataSetChanged();
+                usersAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -85,7 +97,6 @@ public class ChatFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                arrayAdapter.getFilter().filter(s);
                 return false;
             }
         });
