@@ -92,7 +92,7 @@ public class ChatFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                // TOOD: usersadapter filter
+                // TODO: usersadapter filter
                 return false;
             }
         });

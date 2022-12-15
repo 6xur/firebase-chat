@@ -6,7 +6,7 @@
     android:padding="8dp">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/profileImage"
+        android:id="@+id/profileImageContainer"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:elevation="12dp"
@@ -14,6 +14,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
         <ImageView
+            android:id="@+id/profileImage"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:src="@drawable/ic_launcher_background"
@@ -24,9 +25,9 @@
         android:id="@+id/viewSupporter"
         android:layout_width="1dp"
         android:layout_height="1dp"
-        app:layout_constraintBottom_toBottomOf="@id/profileImage"
-        app:layout_constraintStart_toEndOf="@id/profileImage"
-        app:layout_constraintTop_toTopOf="@id/profileImage" />
+        app:layout_constraintBottom_toBottomOf="@id/profileImageContainer"
+        app:layout_constraintStart_toEndOf="@id/profileImageContainer"
+        app:layout_constraintTop_toTopOf="@id/profileImageContainer" />
 
     <TextView
         android:id="@+id/nameText"
@@ -39,7 +40,7 @@
         android:textSize="13sp"
         app:layout_constraintBottom_toTopOf="@id/viewSupporter"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/profileImage"/>
+        app:layout_constraintStart_toEndOf="@id/profileImageContainer"/>
 
     <TextView
         android:id="@+id/emailText"
@@ -51,7 +52,7 @@
         android:maxLines="1"
         android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/profileImage"
+        app:layout_constraintStart_toEndOf="@id/profileImageContainer"
         app:layout_constraintTop_toBottomOf="@id/viewSupporter" />
 
 
