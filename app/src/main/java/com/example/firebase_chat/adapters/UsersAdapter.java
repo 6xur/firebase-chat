@@ -1,5 +1,6 @@
 package com.example.firebase_chat.adapters;
 
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +53,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
         holder.emailText.setText(email);
         // TODO: image isn't loading in user
         if(imgUri != null){
+            System.out.println(imgUri);
             Picasso.get().load(imgUri).into(holder.profileImage);
         }
     }

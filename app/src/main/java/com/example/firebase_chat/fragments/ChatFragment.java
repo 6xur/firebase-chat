@@ -62,7 +62,11 @@ public class ChatFragment extends Fragment {
                     String name = ds.child("name").getValue(String.class);
                     String email = ds.child("email").getValue(String.class);
                     String Uid = ds.child("Uid").getValue(String.class);
+                    String imgUri = ds.child("imgUri").getValue(String.class);
                     User user = new User(name, email, Uid);
+                    if(imgUri != null){
+                        user.imgUri = imgUri;
+                    }
                     users.add(user);
                 }
                 usersAdapter.notifyDataSetChanged();
