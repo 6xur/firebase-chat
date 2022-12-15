@@ -26,8 +26,8 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
 
         public UsersViewHolder(final View view){
             super(view);
-            nameText = view.findViewById(R.id.textName);
-            emailText = view.findViewById(R.id.textEmail);
+            nameText = view.findViewById(R.id.nameText);
+            emailText = view.findViewById(R.id.emailText);
         }
     }
 

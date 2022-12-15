@@ -29,7 +29,7 @@
         app:layout_constraintTop_toTopOf="@id/profileImage" />
 
     <TextView
-        android:id="@+id/textName"
+        android:id="@+id/nameText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -42,7 +42,7 @@
         app:layout_constraintStart_toEndOf="@id/profileImage"/>
 
     <TextView
-        android:id="@+id/textEmail"
+        android:id="@+id/emailText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
