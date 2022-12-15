@@ -31,6 +31,7 @@ import com.example.firebase_chat.R;
 import com.example.firebase_chat.utilities.User;
 import com.example.firebase_chat.utilities.UserDao;
 import com.example.firebase_chat.activities.MainActivity;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -179,7 +180,14 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         StorageReference fileRef = storageRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg");
         fileRef.putFile(imageUri).addOnSuccessListener(taskSnapshot -> {
             Toast.makeText(getActivity(), "Profile photo uploaded", Toast.LENGTH_SHORT).show();
-            fileRef.getDownloadUrl().addOnSuccessListener(uri -> Picasso.get().load(uri).into(profilePicture));
+            fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Picasso.get().load(uri).into(profilePicture);
+                    retrievedUser.imgUri = uri.toString();
+                    userDao.add(retrievedUser);
+                }
+            });
         }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed to upload", Toast.LENGTH_SHORT).show());
     }
 
