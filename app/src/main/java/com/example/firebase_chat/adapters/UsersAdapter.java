@@ -1,6 +1,5 @@
 package com.example.firebase_chat.adapters;
 
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,23 +18,22 @@ import java.util.ArrayList;
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHolder> {
     private ArrayList<User> users;
 
-    public UsersAdapter(ArrayList<User> users){
+    public UsersAdapter(ArrayList<User> users) {
         this.users = users;
     }
 
-    public class UsersViewHolder extends RecyclerView.ViewHolder{
+    public class UsersViewHolder extends RecyclerView.ViewHolder {
         private TextView nameText;
         private TextView emailText;
         private ImageView profileImage;
 
-        public UsersViewHolder(final View view){
+        public UsersViewHolder(final View view) {
             super(view);
             nameText = view.findViewById(R.id.nameText);
             emailText = view.findViewById(R.id.emailText);
             profileImage = view.findViewById(R.id.profileImage);
         }
     }
-
 
     @NonNull
     @Override
@@ -51,9 +49,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
         String imgUri = users.get(position).imgUri;
         holder.nameText.setText(name);
         holder.emailText.setText(email);
-        // TODO: image isn't loading in user
-        if(imgUri != null){
-            System.out.println(imgUri);
+        if (imgUri != null) {
             Picasso.get().load(imgUri).into(holder.profileImage);
         }
     }
