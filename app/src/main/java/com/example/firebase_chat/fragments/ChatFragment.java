@@ -31,6 +31,7 @@ public class ChatFragment extends Fragment {
 
     private ArrayList<User> users;
     private UsersAdapter usersAdapter;
+    private RecyclerView recyclerView;
 
     public ChatFragment() {
         // Required empty public constructor
@@ -46,7 +47,7 @@ public class ChatFragment extends Fragment {
         // Set users adapter
         users = new ArrayList<>();
         usersAdapter = new UsersAdapter(users);
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(usersAdapter);

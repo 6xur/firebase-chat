@@ -13,6 +13,7 @@ import com.example.firebase_chat.R;
 import com.example.firebase_chat.utilities.User;
 import com.squareup.picasso.Picasso;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHolder> {
