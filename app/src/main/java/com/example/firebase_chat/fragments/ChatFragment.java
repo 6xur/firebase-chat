@@ -26,10 +26,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class ChatFragment extends Fragment {
 
     private ArrayList<User> users;
+    private ArrayList<User> usersCopy;
     private UsersAdapter usersAdapter;
     private RecyclerView recyclerView;
 
@@ -46,6 +48,7 @@ public class ChatFragment extends Fragment {
 
         // Set users adapter
         users = new ArrayList<>();
+        usersCopy = new ArrayList<>();
         usersAdapter = new UsersAdapter(users);
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
@@ -69,6 +72,7 @@ public class ChatFragment extends Fragment {
                         user.imgUri = imgUri;
                     }
                     users.add(user);
+                    usersCopy.add(user);
                 }
                 usersAdapter.notifyDataSetChanged();
             }
@@ -98,10 +102,27 @@ public class ChatFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String s) {
                 // TODO: usersadapter filter
+                filter(s);
                 return false;
             }
         });
 
         super.onCreateOptionsMenu(menu, inflater);
     }
+
+    public void filter(String text) {
+        users.clear();
+        if(text.isEmpty()) {
+            users.addAll(usersCopy);
+        } else {
+            text = text.toLowerCase();
+            for(User user : usersCopy) {
+                if(user.name.toLowerCase().contains(text) || user.email.toLowerCase().contains(text)) {
+                    users.add(user);
+                }
+            }
+        }
+        usersAdapter.notifyDataSetChanged();
+    }
+
 }
