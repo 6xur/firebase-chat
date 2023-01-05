@@ -13,11 +13,10 @@ import com.example.firebase_chat.R;
 import com.example.firebase_chat.utilities.User;
 import com.squareup.picasso.Picasso;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHolder> {
-    public ArrayList<User> users;
+    private ArrayList<User> users;
 
     public UsersAdapter(ArrayList<User> users) {
         this.users = users;
@@ -52,7 +51,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
         holder.emailText.setText(email);
         if (imgUri != null) {
             Picasso.get().load(imgUri).into(holder.profileImage);
-        } else{
+        } else {
             holder.profileImage.setImageDrawable(null);
         }
     }

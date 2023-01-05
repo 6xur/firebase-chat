@@ -192,7 +192,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     }
 
     // Delete profile pic of current user
-    private void deleteProfilePic(){
+    private void deleteProfilePic() {
         StorageReference fileRef = storageRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg");
         fileRef.delete();
     }
@@ -260,18 +260,18 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         builder.show();
     }
 
-    private void deleteAccount(){
+    private void deleteAccount() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                switch (i){
+                switch (i) {
                     case DialogInterface.BUTTON_POSITIVE:
                         // Yes button clicked
                         deleteProfilePic();  // delete profile pic
-                        user.delete();  // delete user from Firebase Auth
-                        userDao.delete();  // delete user info from realtime database
+                        user.delete();       // delete user from Firebase Auth
+                        userDao.delete();    // delete user info from realtime database
                         startActivity(new Intent(getActivity(), MainActivity.class));
                         Toast.makeText(getActivity(), "Account deleted.",
                                 Toast.LENGTH_SHORT).show();

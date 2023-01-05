@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,7 +26,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class ChatFragment extends Fragment {
 
@@ -69,7 +67,7 @@ public class ChatFragment extends Fragment {
                     String Uid = ds.child("Uid").getValue(String.class);
                     String imgUri = ds.child("imgUri").getValue(String.class);
                     User user = new User(name, email, Uid);
-                    if(imgUri != null){
+                    if (imgUri != null) {
                         user.imgUri = imgUri;
                     }
                     users.add(user);
@@ -115,12 +113,12 @@ public class ChatFragment extends Fragment {
 
     public void filter(String text) {
         users.clear();
-        if(text.isEmpty()) {
+        if (text.isEmpty()) {
             users.addAll(usersCopy);
         } else {
             text = text.toLowerCase();
-            for(User user : usersCopy) {
-                if(user.name.toLowerCase().contains(text) || user.email.toLowerCase().contains(text)) {
+            for (User user : usersCopy) {
+                if (user.name.toLowerCase().contains(text) || user.email.toLowerCase().contains(text)) {
                     users.add(user);
                 }
             }
