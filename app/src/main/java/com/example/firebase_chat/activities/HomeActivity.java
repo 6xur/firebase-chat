@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 
-import com.example.firebase_chat.fragments.ChatFragment;
+import com.example.firebase_chat.fragments.UsersFragment;
 import com.example.firebase_chat.fragments.ProfileFragment;
 import com.example.firebase_chat.R;
 import com.example.firebase_chat.databinding.ActivityHomeBinding;
@@ -52,7 +52,7 @@ public class HomeActivity extends AppCompatActivity {
                     fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("chat")).commit();
                 } else {
                     // If the chat fragment doesn't exist, add it to fragment manager
-                    fragmentManager.beginTransaction().add(R.id.frameLayout, new ChatFragment(), "chat").commit();
+                    fragmentManager.beginTransaction().add(R.id.frameLayout, new UsersFragment(), "chat").commit();
                 }
                 if (fragmentManager.findFragmentByTag("profile") != null) {
                     // If the other fragment is visible, hide it

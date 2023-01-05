@@ -27,14 +27,14 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class ChatFragment extends Fragment {
+public class UsersFragment extends Fragment {
 
     private ArrayList<User> users;
     private ArrayList<User> usersCopy;
     private UsersAdapter usersAdapter;
     private RecyclerView recyclerView;
 
-    public ChatFragment() {
+    public UsersFragment() {
         // Required empty public constructor
     }
 
@@ -42,7 +42,7 @@ public class ChatFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_chat, container, false);
+        View view = inflater.inflate(R.layout.fragment_users, container, false);
         setHasOptionsMenu(true);
 
         // Set users adapter
