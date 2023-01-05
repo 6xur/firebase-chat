@@ -17,7 +17,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHolder> {
-    private ArrayList<User> users;
+    public ArrayList<User> users;
 
     public UsersAdapter(ArrayList<User> users) {
         this.users = users;
@@ -52,6 +52,8 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
         holder.emailText.setText(email);
         if (imgUri != null) {
             Picasso.get().load(imgUri).into(holder.profileImage);
+        } else{
+            holder.profileImage.setImageDrawable(null);
         }
     }
 
