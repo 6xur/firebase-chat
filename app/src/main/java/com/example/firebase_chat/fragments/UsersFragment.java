@@ -16,20 +16,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.example.firebase_chat.R;
 import com.example.firebase_chat.activities.FriendActivity;
-import com.example.firebase_chat.activities.HomeActivity;
-import com.example.firebase_chat.activities.MainActivity;
 import com.example.firebase_chat.adapters.UsersAdapter;
 import com.example.firebase_chat.utilities.User;
 import com.example.firebase_chat.utilities.UserDao;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -55,12 +50,12 @@ public class UsersFragment extends Fragment {
         // Set users adapter
         users = new ArrayList<>();
         usersCopy = new ArrayList<>();
-        usersAdapter = new UsersAdapter(users, new UsersAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(User user) {
-                Toast.makeText(getActivity(), user.name, Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getActivity(), FriendActivity.class));
-            }
+        usersAdapter = new UsersAdapter(users, user -> {
+            Intent intent = new Intent(getActivity(), FriendActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("email", user.email);
+            intent.putExtras(bundle);
+            startActivity(intent);
         });
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
@@ -74,7 +69,7 @@ public class UsersFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     // Do not display self in the user list
-                    if(ds.getKey().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                    if (ds.getKey().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                         continue;
                     }
                     String name = ds.child("name").getValue(String.class);
