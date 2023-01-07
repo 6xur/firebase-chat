@@ -1,5 +1,6 @@
 package com.example.firebase_chat.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,8 +19,13 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.firebase_chat.R;
+import com.example.firebase_chat.activities.FriendActivity;
+import com.example.firebase_chat.activities.HomeActivity;
+import com.example.firebase_chat.activities.MainActivity;
 import com.example.firebase_chat.adapters.UsersAdapter;
 import com.example.firebase_chat.utilities.User;
+import com.example.firebase_chat.utilities.UserDao;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -53,6 +59,7 @@ public class UsersFragment extends Fragment {
             @Override
             public void onItemClick(User user) {
                 Toast.makeText(getActivity(), user.name, Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getActivity(), FriendActivity.class));
             }
         });
         recyclerView = view.findViewById(R.id.recyclerView);
@@ -61,13 +68,15 @@ public class UsersFragment extends Fragment {
         recyclerView.setAdapter(usersAdapter);
 
         // Showing Firebase data in the recycler view
-        FirebaseDatabase database = FirebaseDatabase.getInstance("https://fir-chat-d5a58-default-rtdb.asia-southeast1.firebasedatabase.app");
-        DatabaseReference usersReference = database.getReference("Users");
-        ValueEventListener eventListener = new ValueEventListener() {
+        UserDao userDao = new UserDao();
+        userDao.getDatabaseRef().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds : snapshot.getChildren()) {
-                    System.out.println(ds.getKey());
+                    // Do not display self in the user list
+                    if(ds.getKey().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                        continue;
+                    }
                     String name = ds.child("name").getValue(String.class);
                     String email = ds.child("email").getValue(String.class);
                     String Uid = ds.child("Uid").getValue(String.class);
@@ -86,8 +95,8 @@ public class UsersFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError error) {
                 System.out.println(error.getMessage());
             }
-        };
-        usersReference.addListenerForSingleValueEvent(eventListener);
+        });
+
         return view;
     }
 

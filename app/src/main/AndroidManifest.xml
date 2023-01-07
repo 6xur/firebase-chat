@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Firebasechat">
         <activity
+            android:name=".activities.FriendActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.HomeActivity"
             android:exported="false" />
         <activity
