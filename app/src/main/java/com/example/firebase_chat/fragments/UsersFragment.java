@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.example.firebase_chat.R;
 import com.example.firebase_chat.adapters.UsersAdapter;
@@ -48,7 +49,12 @@ public class UsersFragment extends Fragment {
         // Set users adapter
         users = new ArrayList<>();
         usersCopy = new ArrayList<>();
-        usersAdapter = new UsersAdapter(users);
+        usersAdapter = new UsersAdapter(users, new UsersAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(User user) {
+                Toast.makeText(getActivity(), user.name, Toast.LENGTH_SHORT).show();
+            }
+        });
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -102,7 +108,6 @@ public class UsersFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                // TODO: usersadapter filter
                 filter(s);
                 return true;
             }

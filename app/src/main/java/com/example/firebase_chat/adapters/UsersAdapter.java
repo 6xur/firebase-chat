@@ -16,16 +16,24 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHolder> {
-    private ArrayList<User> users;
 
-    public UsersAdapter(ArrayList<User> users) {
+    public interface OnItemClickListener {
+        void onItemClick(User user);
+    }
+
+    private final ArrayList<User> users;
+    private final OnItemClickListener listener;
+
+    public UsersAdapter(ArrayList<User> users, OnItemClickListener listener) {
         this.users = users;
+        this.listener = listener;
+
     }
 
     public class UsersViewHolder extends RecyclerView.ViewHolder {
-        private TextView nameText;
-        private TextView emailText;
-        private ImageView profileImage;
+        private final TextView nameText;
+        private final TextView emailText;
+        private final ImageView profileImage;
 
         public UsersViewHolder(final View view) {
             super(view);
@@ -33,6 +41,15 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
             nameText = view.findViewById(R.id.nameText);
             emailText = view.findViewById(R.id.emailText);
             profileImage = view.findViewById(R.id.profileImage);
+        }
+
+        public void bind(final User user, final OnItemClickListener listener) {
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onItemClick(user);
+                }
+            });
         }
     }
 
@@ -55,7 +72,9 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
         } else {
             holder.profileImage.setImageResource(R.color.purple_200);
         }
+        holder.bind(users.get(position), listener);  // set the click listener
     }
+
 
     @Override
     public int getItemCount() {
