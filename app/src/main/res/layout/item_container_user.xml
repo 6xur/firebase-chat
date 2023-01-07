@@ -17,8 +17,9 @@
             android:id="@+id/profileImage"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:src="@drawable/ic_launcher_background"
-            android:scaleType="centerCrop" />
+            android:src="@color/purple_200"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"/>
     </androidx.cardview.widget.CardView>
 
     <View

@@ -31,7 +31,6 @@ import com.example.firebase_chat.R;
 import com.example.firebase_chat.utilities.User;
 import com.example.firebase_chat.utilities.UserDao;
 import com.example.firebase_chat.activities.MainActivity;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -150,8 +149,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 updateContactInfo();
                 break;
             case R.id.deleteAccountBtn:
-                deleteAccount();  // Delete user from Firebase Auth
-                // TODO: remove profile picture
+                deleteAccount();
                 break;
         }
     }
@@ -180,13 +178,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         StorageReference fileRef = storageRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg");
         fileRef.putFile(imageUri).addOnSuccessListener(taskSnapshot -> {
             Toast.makeText(getActivity(), "Profile photo uploaded", Toast.LENGTH_SHORT).show();
-            fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    Picasso.get().load(uri).into(profilePicture);
-                    retrievedUser.imgUri = uri.toString();
-                    userDao.add(retrievedUser);
-                }
+            fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                Picasso.get().load(uri).into(profilePicture);
+                retrievedUser.imgUri = uri.toString();
+                userDao.add(retrievedUser);
             });
         }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed to upload", Toast.LENGTH_SHORT).show());
     }
@@ -263,23 +258,20 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private void deleteAccount() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                switch (i) {
-                    case DialogInterface.BUTTON_POSITIVE:
-                        // Yes button clicked
-                        deleteProfilePic();  // delete profile pic
-                        user.delete();       // delete user from Firebase Auth
-                        userDao.delete();    // delete user info from realtime database
-                        startActivity(new Intent(getActivity(), MainActivity.class));
-                        Toast.makeText(getActivity(), "Account deleted.",
-                                Toast.LENGTH_SHORT).show();
-                        break;
-                    case DialogInterface.BUTTON_NEGATIVE:
-                        // No button clicked
-                        break;
-                }
+        DialogInterface.OnClickListener dialogClickListener = (dialogInterface, i) -> {
+            switch (i) {
+                case DialogInterface.BUTTON_POSITIVE:
+                    // Yes button clicked
+                    deleteProfilePic();  // delete profile pic
+                    user.delete();       // delete user from Firebase Auth
+                    userDao.delete();    // delete user info from realtime database
+                    startActivity(new Intent(getActivity(), MainActivity.class));
+                    Toast.makeText(getActivity(), "Account deleted.",
+                            Toast.LENGTH_SHORT).show();
+                    break;
+                case DialogInterface.BUTTON_NEGATIVE:
+                    // No button clicked
+                    break;
             }
         };
 
@@ -287,5 +279,4 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
                 .setNegativeButton("No", dialogClickListener).show();
     }
-
 }

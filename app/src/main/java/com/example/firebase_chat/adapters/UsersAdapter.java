@@ -29,6 +29,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
 
         public UsersViewHolder(final View view) {
             super(view);
+            setIsRecyclable(false);  // do not recycle otherwise the images would be set wrong
             nameText = view.findViewById(R.id.nameText);
             emailText = view.findViewById(R.id.emailText);
             profileImage = view.findViewById(R.id.profileImage);
@@ -52,7 +53,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
         if (imgUri != null) {
             Picasso.get().load(imgUri).into(holder.profileImage);
         } else {
-            holder.profileImage.setImageDrawable(null);
+            holder.profileImage.setImageResource(R.color.purple_200);
         }
     }
 
