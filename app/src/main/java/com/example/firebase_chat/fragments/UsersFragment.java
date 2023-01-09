@@ -53,7 +53,7 @@ public class UsersFragment extends Fragment {
         usersAdapter = new UsersAdapter(users, user -> {
             Intent intent = new Intent(getActivity(), FriendActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putString("email", user.email);
+            bundle.putString("Uid", user.Uid);
             intent.putExtras(bundle);
             startActivity(intent);
         });
