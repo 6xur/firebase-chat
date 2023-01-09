@@ -67,6 +67,8 @@ public class UsersFragment extends Fragment {
         userDao.getDatabaseRef().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                users.clear();
+                usersCopy.clear();
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     // Do not display self in the user list
                     if (ds.getKey().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {

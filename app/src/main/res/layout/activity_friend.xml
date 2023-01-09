@@ -64,19 +64,6 @@
                             android:textStyle="bold"
                             android:textColor="@color/black"/>
 
-                        <Space
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
-
-                        <TextView
-                            android:id="@+id/editBio"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="10dp"
-                            android:text="@string/edit"
-                            android:textSize="14sp" />
-
                     </LinearLayout>
 
                     <TextView
@@ -111,18 +98,6 @@
                         android:textStyle="bold"
                         android:textColor="@color/black"/>
 
-                    <Space
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:id="@+id/editContactInfo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:text="@string/edit"
-                        android:textSize="14sp"/>
 
                 </LinearLayout>
 
