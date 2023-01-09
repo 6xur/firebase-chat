@@ -191,10 +191,10 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/deleteAccountBtn"
+                android:id="@+id/chatBtn"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginTop="470dp"
+                android:layout_marginTop="365dp"
                 android:text="Chat"/>
 
 
