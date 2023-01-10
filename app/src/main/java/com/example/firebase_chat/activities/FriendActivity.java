@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -139,11 +140,12 @@ public class FriendActivity extends AppCompatActivity implements View.OnClickLis
                 clipboard.setPrimaryClip(clip);
                 break;
             case R.id.chatBtn:
-                // TODO: implement chat
+                // TODO: implement chat and pass mainUser and friend as extras
                 Message message = new Message(mainUser, friend, "Hello");
                 MessageDao dao = new MessageDao();
-                dao.add(message);
+                //dao.add(message);
                 Toast.makeText(getApplicationContext(), "Chat clicked", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getApplicationContext(), ChatActivity.class));
                 break;
         }
     }
