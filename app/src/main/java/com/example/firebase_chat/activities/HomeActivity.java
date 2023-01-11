@@ -9,6 +9,7 @@ import com.example.firebase_chat.fragments.UsersFragment;
 import com.example.firebase_chat.fragments.ProfileFragment;
 import com.example.firebase_chat.R;
 import com.example.firebase_chat.databinding.ActivityHomeBinding;
+import com.example.firebase_chat.utilities.Constants;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HomeActivity extends AppCompatActivity {
@@ -47,26 +48,26 @@ public class HomeActivity extends AppCompatActivity {
 
         switch (position) {
             case 0:
-                if (fragmentManager.findFragmentByTag("users") != null) {
+                if (fragmentManager.findFragmentByTag(Constants.KEY_USERS) != null) {
                     // If the users fragment exists, show it
-                    fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("users")).commit();
+                    fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag(Constants.KEY_USERS)).commit();
                 } else {
                     // If the users fragment doesn't exist, add it to fragment manager
-                    fragmentManager.beginTransaction().add(R.id.frameLayout, new UsersFragment(), "users").commit();
+                    fragmentManager.beginTransaction().add(R.id.frameLayout, new UsersFragment(), Constants.KEY_USERS).commit();
                 }
-                if (fragmentManager.findFragmentByTag("profile") != null) {
+                if (fragmentManager.findFragmentByTag(Constants.KEY_PROFILE) != null) {
                     // If the other fragment is visible, hide it
-                    fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("profile")).commit();
+                    fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag(Constants.KEY_PROFILE)).commit();
                 }
                 break;
             case 1:
-                if (fragmentManager.findFragmentByTag("profile") != null) {
-                    fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("profile")).commit();
+                if (fragmentManager.findFragmentByTag(Constants.KEY_PROFILE) != null) {
+                    fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag(Constants.KEY_PROFILE)).commit();
                 } else {
-                    fragmentManager.beginTransaction().add(R.id.frameLayout, new ProfileFragment(), "profile").commit();
+                    fragmentManager.beginTransaction().add(R.id.frameLayout, new ProfileFragment(), Constants.KEY_PROFILE).commit();
                 }
-                if (fragmentManager.findFragmentByTag("users") != null) {
-                    fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("users")).commit();
+                if (fragmentManager.findFragmentByTag(Constants.KEY_USERS) != null) {
+                    fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag(Constants.KEY_USERS)).commit();
                 }
                 break;
         }
