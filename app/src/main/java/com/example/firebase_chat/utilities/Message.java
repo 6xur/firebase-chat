@@ -15,6 +15,5 @@ public class Message {
         this.receiverName = receiver.name;
         this.message = message;
         this.timestamp = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new java.util.Date());
-
     }
 }

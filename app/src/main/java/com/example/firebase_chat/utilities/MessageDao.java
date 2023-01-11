@@ -18,18 +18,26 @@ public class MessageDao implements Dao<Message> {
     public Task<Void> add(Message message) {
         String senderUid = message.senderUid;
         String receiverUid = message.receiverUid;
-        String path;
+        String path = getMessagePath(senderUid, receiverUid);
+        return databaseRef.child(path).child(message.timestamp).setValue(message);
+    }
+
+    public String getMessagePath(String senderUid, String receiverUid) {
         int compare = senderUid.compareTo(receiverUid);
         if (compare < 0) {
-            path = senderUid + "_" + receiverUid;
+            return senderUid + "_" + receiverUid;
         } else {
-            path = receiverUid + "_" + senderUid;
+            return receiverUid + "_" + senderUid;
         }
-        return databaseRef.child(path).child(message.timestamp).setValue(message);
     }
 
     @Override
     public Task<Void> delete() {
         return null;
     }
+
+    public DatabaseReference getDatabaseRef() {
+        return databaseRef;
+    }
+
 }

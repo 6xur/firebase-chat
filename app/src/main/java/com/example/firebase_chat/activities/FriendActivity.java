@@ -143,13 +143,11 @@ public class FriendActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.chatBtn:
                 // TODO: implement chat and pass mainUser and friend as extras (probably)
-                //Message message = new Message(mainUser, friend, "Hello");
-                //MessageDao dao = new MessageDao();
-                //dao.add(message);
                 Toast.makeText(getApplicationContext(), "Chat clicked", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
-                intent.putExtra(Constants.KEY_USER, friend);
+                intent.putExtra(Constants.KEY_USER, mainUser);
+                intent.putExtra(Constants.KEY_FRIEND, friend);
                 startActivity(intent);
 
                 break;
