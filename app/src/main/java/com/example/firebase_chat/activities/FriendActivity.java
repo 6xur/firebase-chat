@@ -8,6 +8,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -142,11 +143,15 @@ public class FriendActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.chatBtn:
                 // TODO: implement chat and pass mainUser and friend as extras (probably)
-                Message message = new Message(mainUser, friend, "Hello");
-                MessageDao dao = new MessageDao();
+                //Message message = new Message(mainUser, friend, "Hello");
+                //MessageDao dao = new MessageDao();
                 //dao.add(message);
                 Toast.makeText(getApplicationContext(), "Chat clicked", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getApplicationContext(), ChatActivity.class));
+
+                Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
+                intent.putExtra(Constants.KEY_USER, friend);
+                startActivity(intent);
+
                 break;
         }
     }

@@ -1,6 +1,8 @@
 package com.example.firebase_chat.utilities;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 
     public String name, email, Uid;
     public String bio;
