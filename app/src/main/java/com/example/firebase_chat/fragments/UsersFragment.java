@@ -20,6 +20,7 @@ import android.widget.SearchView;
 import com.example.firebase_chat.R;
 import com.example.firebase_chat.activities.FriendActivity;
 import com.example.firebase_chat.adapters.UsersAdapter;
+import com.example.firebase_chat.utilities.Constants;
 import com.example.firebase_chat.utilities.User;
 import com.example.firebase_chat.utilities.UserDao;
 import com.google.firebase.auth.FirebaseAuth;
@@ -53,7 +54,7 @@ public class UsersFragment extends Fragment {
         usersAdapter = new UsersAdapter(users, user -> {
             Intent intent = new Intent(getActivity(), FriendActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putString("Uid", user.Uid);
+            bundle.putString(Constants.KEY_UID, user.Uid);
             intent.putExtras(bundle);
             startActivity(intent);
         });
@@ -74,10 +75,10 @@ public class UsersFragment extends Fragment {
                     if (ds.getKey().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                         continue;
                     }
-                    String name = ds.child("name").getValue(String.class);
-                    String email = ds.child("email").getValue(String.class);
-                    String Uid = ds.child("Uid").getValue(String.class);
-                    String imgUri = ds.child("imgUri").getValue(String.class);
+                    String name = ds.child(Constants.KEY_NAME).getValue(String.class);
+                    String email = ds.child(Constants.KEY_EMAIL).getValue(String.class);
+                    String Uid = ds.child(Constants.KEY_UID).getValue(String.class);
+                    String imgUri = ds.child(Constants.KEY_IMG_URI).getValue(String.class);
                     User user = new User(name, email, Uid);
                     if (imgUri != null) {
                         user.imgUri = imgUri;

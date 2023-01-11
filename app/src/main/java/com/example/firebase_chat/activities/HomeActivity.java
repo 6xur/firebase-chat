@@ -26,7 +26,7 @@ public class HomeActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
-                case R.id.chat:
+                case R.id.users:
                     replaceFragment(0);
                     break;
                 case R.id.profile:
@@ -39,7 +39,7 @@ public class HomeActivity extends AppCompatActivity {
 
     /**
      * Switch whatever is in the frame layout with the new fragment
-     * 0 - Chat Fragment
+     * 0 - Users Fragment
      * 1 - Profile Fragment
      **/
     private void replaceFragment(int position) {
@@ -47,12 +47,12 @@ public class HomeActivity extends AppCompatActivity {
 
         switch (position) {
             case 0:
-                if (fragmentManager.findFragmentByTag("chat") != null) {
-                    // If the chat fragment exists, show it
-                    fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("chat")).commit();
+                if (fragmentManager.findFragmentByTag("users") != null) {
+                    // If the users fragment exists, show it
+                    fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("users")).commit();
                 } else {
-                    // If the chat fragment doesn't exist, add it to fragment manager
-                    fragmentManager.beginTransaction().add(R.id.frameLayout, new UsersFragment(), "chat").commit();
+                    // If the users fragment doesn't exist, add it to fragment manager
+                    fragmentManager.beginTransaction().add(R.id.frameLayout, new UsersFragment(), "users").commit();
                 }
                 if (fragmentManager.findFragmentByTag("profile") != null) {
                     // If the other fragment is visible, hide it
@@ -65,8 +65,8 @@ public class HomeActivity extends AppCompatActivity {
                 } else {
                     fragmentManager.beginTransaction().add(R.id.frameLayout, new ProfileFragment(), "profile").commit();
                 }
-                if (fragmentManager.findFragmentByTag("chat") != null) {
-                    fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("chat")).commit();
+                if (fragmentManager.findFragmentByTag("users") != null) {
+                    fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("users")).commit();
                 }
                 break;
         }

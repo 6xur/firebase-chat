@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.firebase_chat.R;
+import com.example.firebase_chat.utilities.Constants;
 import com.example.firebase_chat.utilities.Message;
 import com.example.firebase_chat.utilities.MessageDao;
 import com.example.firebase_chat.utilities.User;
@@ -71,7 +72,7 @@ public class FriendActivity extends AppCompatActivity implements View.OnClickLis
         // Get the Uid of the selected user
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            friendUid = bundle.getString("Uid");
+            friendUid = bundle.getString(Constants.KEY_UID);
         }
 
         userDao = new UserDao();
@@ -84,7 +85,7 @@ public class FriendActivity extends AppCompatActivity implements View.OnClickLis
                         mainUser = user.getValue(User.class);
                     }
                     // Retrieve friend
-                    if (user.child("Uid").getValue().equals(friendUid)) {
+                    if (user.child(Constants.KEY_UID).getValue().equals(friendUid)) {
                         friend = user.getValue(User.class);
                         if (friend != null) {
                             name.setText(friend.name);
@@ -140,7 +141,7 @@ public class FriendActivity extends AppCompatActivity implements View.OnClickLis
                 clipboard.setPrimaryClip(clip);
                 break;
             case R.id.chatBtn:
-                // TODO: implement chat and pass mainUser and friend as extras
+                // TODO: implement chat and pass mainUser and friend as extras (probably)
                 Message message = new Message(mainUser, friend, "Hello");
                 MessageDao dao = new MessageDao();
                 //dao.add(message);
