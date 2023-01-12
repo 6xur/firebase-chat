@@ -8,11 +8,11 @@ public class Message {
     public String senderName, receiverName;
     public String timestamp;
 
-    public Message(User sender, User receiver, String message) {
-        this.senderUid = sender.Uid;
-        this.senderName = sender.name;
-        this.receiverUid = receiver.Uid;
-        this.receiverName = receiver.name;
+    public Message(String senderUid, String senderName, String receiverUid, String receiverName, String message) {
+        this.senderUid = senderUid;
+        this.senderName = senderName;
+        this.receiverUid = receiverUid;
+        this.receiverName = receiverName;
         this.message = message;
         this.timestamp = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new java.util.Date());
     }
@@ -36,9 +36,7 @@ public class Message {
             return false;
         }
 
-        // Typecast o to message so that we can compare data members
         Message message = (Message) o;
-
         return message.message.equals(this.message)
                 && message.senderUid.equals(this.senderUid)
                 && message.senderName.equals(this.senderName)

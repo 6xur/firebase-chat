@@ -101,7 +101,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private void sendMessage() {
         if (inputMessage.getText().length() > 0) {
-            Message message = new Message(mainUser, friend, inputMessage.getText().toString());
+            Message message = new Message(mainUser.Uid, mainUser.name, friend.Uid, friend.name, inputMessage.getText().toString());
             messageDao.add(message);
             inputMessage.setText(null);
         }
