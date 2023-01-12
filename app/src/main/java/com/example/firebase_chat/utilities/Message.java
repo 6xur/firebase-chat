@@ -1,6 +1,7 @@
 package com.example.firebase_chat.utilities;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Message {
     public String message;
@@ -14,7 +15,7 @@ public class Message {
         this.receiverUid = receiverUid;
         this.receiverName = receiverName;
         this.message = message;
-        this.timestamp = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new java.util.Date());
+        this.timestamp = getReadableTimeStamp(new Date());  // timestamp is the current time
     }
 
     public Message(String senderUid, String senderName, String receiverUid, String receiverName, String message, String timestamp) {
@@ -24,6 +25,11 @@ public class Message {
         this.receiverName = receiverName;
         this.message = message;
         this.timestamp = timestamp;
+    }
+
+    public String getReadableTimeStamp(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss");
+        return sdf.format(date);
     }
 
     @Override
