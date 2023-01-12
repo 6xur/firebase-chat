@@ -6,10 +6,8 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.firebase_chat.R;
 import com.example.firebase_chat.adapters.ChatAdapter;
@@ -20,7 +18,6 @@ import com.example.firebase_chat.utilities.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -72,12 +69,27 @@ public class ChatActivity extends AppCompatActivity {
         messageDao.getDatabaseRef().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot chat : snapshot.getChildren()) {  // a conversation is between two users
-                    if(chat.getKey().equals(messageDao.getMessagePath(mainUser.Uid, friend.Uid))) {  // existing conversation
+                for (DataSnapshot chat : snapshot.getChildren()) {  // a chat is between two users
+                    if (chat.getKey().equals(messageDao.getMessagePath(mainUser.Uid, friend.Uid))) {  // existing chat
                         System.out.println(mainUser.name + " and " + friend.name + " have talked before");
                         // TODO: Create message objects and add them to messages
+                        //String name = ds.child(Constants.KEY_NAME).getValue(String.class);
+                        for (DataSnapshot message : chat.getChildren()) {
+                            String text = message.child("message").getValue(String.class);
+                            String senderUid = message.child("senderUid").getValue(String.class);
+                            String senderName = message.child("senderName").getValue(String.class);
+                            String receiverUid = message.child("receiverUid").getValue(String.class);
+                            String receiverName = message.child("receiverName").getValue(String.class);
+                            String timestamp = message.child("timestamp").getValue(String.class);
+                            Message messageObj = new Message(senderUid, senderName, receiverUid, receiverName, text, timestamp);
+                            if(!messages.contains(messageObj)) {
+                                messages.add(messageObj);
+                            }
+                        }
                     }
                 }
+                chatAdapter.notifyDataSetChanged();
+                chatRecyclerView.smoothScrollToPosition(messages.size());
             }
 
             @Override
@@ -88,7 +100,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void sendMessage() {
-        if(inputMessage.getText().length() > 0) {
+        if (inputMessage.getText().length() > 0) {
             Message message = new Message(mainUser, friend, inputMessage.getText().toString());
             messageDao.add(message);
             inputMessage.setText(null);

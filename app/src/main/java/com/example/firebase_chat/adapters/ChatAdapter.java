@@ -96,7 +96,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         void setData(Message message) {
             binding.textMessage.setText(message.message);
-            binding.textMessage.setText(message.timestamp);
+            binding.textDateTime.setText(message.timestamp);
         }
     }
 }
