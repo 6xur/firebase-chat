@@ -27,10 +27,9 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
     public UsersAdapter(ArrayList<User> users, OnItemClickListener listener) {
         this.users = users;
         this.listener = listener;
-
     }
 
-    public class UsersViewHolder extends RecyclerView.ViewHolder {
+    public static class UsersViewHolder extends RecyclerView.ViewHolder {
         private final TextView nameText;
         private final TextView emailText;
         private final ImageView profileImage;
@@ -44,12 +43,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
         }
 
         public void bind(final User user, final OnItemClickListener listener) {
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    listener.onItemClick(user);
-                }
-            });
+            itemView.setOnClickListener(view -> listener.onItemClick(user));
         }
     }
 
@@ -74,7 +68,6 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
         }
         holder.bind(users.get(position), listener);
     }
-
 
     @Override
     public int getItemCount() {

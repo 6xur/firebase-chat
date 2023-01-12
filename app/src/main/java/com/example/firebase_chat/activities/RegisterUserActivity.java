@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -18,7 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.regex.Pattern;
 
-public class RegisterUserActivity extends AppCompatActivity implements View.OnClickListener {
+public class RegisterUserActivity extends AppCompatActivity {
 
     private TextView banner;
     private EditText editTextName, editTextEmail, editTextPassword;
@@ -36,24 +35,17 @@ public class RegisterUserActivity extends AppCompatActivity implements View.OnCl
         userDao = new UserDao();
 
         banner = findViewById(R.id.banner);
-        banner.setOnClickListener(this);
         editTextName = findViewById(R.id.name);
         editTextEmail = findViewById(R.id.email);
         editTextPassword = findViewById(R.id.password);
         registerUser = findViewById(R.id.registerUser);
-        registerUser.setOnClickListener(this);
+
+        setListeners();
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.banner:
-                startActivity(new Intent(this, MainActivity.class));
-                break;
-            case R.id.registerUser:
-                registerUser();
-                break;
-        }
+    public void setListeners() {
+        banner.setOnClickListener(view -> startActivity(new Intent(this, MainActivity.class)));
+        registerUser.setOnClickListener(view -> registerUser());
     }
 
     private void registerUser() {

@@ -1,22 +1,18 @@
 package com.example.firebase_chat.activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.firebase_chat.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity {
 
     private EditText editTextEmail, editTextPassword;
     private Button login;
@@ -34,26 +30,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editTextEmail = findViewById(R.id.email);
         editTextPassword = findViewById(R.id.password);
         login = findViewById(R.id.login);
-        login.setOnClickListener(this);
         register = findViewById(R.id.register);
-        register.setOnClickListener(this);
         forgotPassword = findViewById(R.id.forgotPassword);
-        forgotPassword.setOnClickListener(this);
+
+        setListeners();
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.register:
-                startActivity(new Intent(this, RegisterUserActivity.class));
-                break;
-            case R.id.login:
-                userLogin();
-                break;
-            case R.id.forgotPassword:
-                resetPassword();
-                break;
-        }
+    public void setListeners() {
+        register.setOnClickListener(view -> startActivity(new Intent(this, RegisterUserActivity.class)));
+        login.setOnClickListener(view -> userLogin());
+        forgotPassword.setOnClickListener(view -> resetPassword());
     }
 
     private void userLogin() {
@@ -86,11 +72,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                // Get user information
-
                 // Redirect to home page
                 startActivity(new Intent(MainActivity.this, HomeActivity.class));
-                // finish();
             } else {
                 Toast.makeText(MainActivity.this, "Failed to login, please check your credentials.", Toast.LENGTH_SHORT).show();
             }
@@ -112,14 +95,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
-        mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    Toast.makeText(MainActivity.this, "Check your email to reset your password.", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(MainActivity.this, "Try again, something went wrong.", Toast.LENGTH_SHORT).show();
-                }
+        mAuth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(MainActivity.this, "Check your email to reset your password.", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(MainActivity.this, "Try again, something went wrong.", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -10,7 +10,7 @@ public class User implements Serializable {
     public String imgUri;
 
     public User() {
-
+        // Do not remove
     }
 
     public User(String name, String email, String Uid) {
