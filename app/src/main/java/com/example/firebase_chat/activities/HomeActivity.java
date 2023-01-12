@@ -17,21 +17,24 @@ public class HomeActivity extends AppCompatActivity {
     ActivityHomeBinding binding;
     BottomNavigationView bottomNavigationView;
 
+    public static final int USERS_FRAGMENT = 0;
+    public static final int PROFILE_FRAGMENT = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(R.layout.activity_home);
-        replaceFragment(0);
+        replaceFragment(USERS_FRAGMENT);
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.users:
-                    replaceFragment(0);
+                    replaceFragment(USERS_FRAGMENT);
                     break;
                 case R.id.profile:
-                    replaceFragment(1);
+                    replaceFragment(PROFILE_FRAGMENT);
                     break;
             }
             return true;
@@ -47,7 +50,7 @@ public class HomeActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         switch (position) {
-            case 0:
+            case USERS_FRAGMENT:
                 if (fragmentManager.findFragmentByTag(Constants.KEY_USERS) != null) {
                     // If the users fragment exists, show it
                     fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag(Constants.KEY_USERS)).commit();
@@ -60,7 +63,7 @@ public class HomeActivity extends AppCompatActivity {
                     fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag(Constants.KEY_PROFILE)).commit();
                 }
                 break;
-            case 1:
+            case PROFILE_FRAGMENT:
                 if (fragmentManager.findFragmentByTag(Constants.KEY_PROFILE) != null) {
                     fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag(Constants.KEY_PROFILE)).commit();
                 } else {
