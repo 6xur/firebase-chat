@@ -101,7 +101,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void setListeners() {
-        imageBack.setOnClickListener(v -> onBackPressed());
-        layoutSend.setOnClickListener(v -> sendMessage());
+        imageBack.setOnClickListener(view -> onBackPressed());
+        layoutSend.setOnClickListener(view -> sendMessage());
     }
 }
