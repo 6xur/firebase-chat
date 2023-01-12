@@ -72,7 +72,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
         } else {
             holder.profileImage.setImageResource(R.color.purple_200);
         }
-        holder.bind(users.get(position), listener);  // set the click listener
+        holder.bind(users.get(position), listener);
     }
 
 

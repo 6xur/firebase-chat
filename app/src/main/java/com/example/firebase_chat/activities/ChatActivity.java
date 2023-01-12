@@ -31,10 +31,9 @@ public class ChatActivity extends AppCompatActivity {
     private FrameLayout layoutSend;
 
     private User mainUser;
-    private User friend;  // user we're chatting with (note that the app does not support friending)
+    private User friend;  // user we are chatting with, note that the app doesn't support friending
     private List<Message> messages;
     private ChatAdapter chatAdapter;
-
     private MessageDao messageDao;
 
     @Override
@@ -48,32 +47,27 @@ public class ChatActivity extends AppCompatActivity {
         inputMessage = findViewById(R.id.inputMessage);
         layoutSend = findViewById(R.id.layoutSend);
 
+        setListeners();
+
         mainUser = (User) getIntent().getSerializableExtra(Constants.KEY_USER);
         friend = (User) getIntent().getSerializableExtra(Constants.KEY_FRIEND);
         name.setText(friend.name);
 
-        setListeners();
-        init();
-    }
-
-    private void init() {
-        //preferenceManager = new PreferenceManager(getApplicationContext());
+        // Set chat adapter
         messages = new ArrayList<>();
-        chatAdapter = new ChatAdapter(
-                messages,
-                FirebaseAuth.getInstance().getCurrentUser().getUid()
-        );
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            chatAdapter = new ChatAdapter(messages, FirebaseAuth.getInstance().getCurrentUser().getUid());
+        }
         chatRecyclerView.setAdapter(chatAdapter);
-        messageDao = new MessageDao();
 
+        // Display chat in Recyclerview
+        messageDao = new MessageDao();
         messageDao.getDatabaseRef().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot chat : snapshot.getChildren()) {  // a chat is between two users
-                    if (chat.getKey().equals(messageDao.getMessagePath(mainUser.Uid, friend.Uid))) {  // existing chat
-                        System.out.println(mainUser.name + " and " + friend.name + " have talked before");
-                        // TODO: Create message objects and add them to messages
-                        //String name = ds.child(Constants.KEY_NAME).getValue(String.class);
+                for (DataSnapshot chat : snapshot.getChildren()) {
+                    if (chat.getKey() != null && chat.getKey().equals(messageDao.getMessagePath(mainUser.Uid, friend.Uid))) {
+                        // Load all messages from the existing chat
                         for (DataSnapshot message : chat.getChildren()) {
                             String text = message.child("message").getValue(String.class);
                             String senderUid = message.child("senderUid").getValue(String.class);
@@ -82,7 +76,7 @@ public class ChatActivity extends AppCompatActivity {
                             String receiverName = message.child("receiverName").getValue(String.class);
                             String timestamp = message.child("timestamp").getValue(String.class);
                             Message messageObj = new Message(senderUid, senderName, receiverUid, receiverName, text, timestamp);
-                            if(!messages.contains(messageObj)) {
+                            if (!messages.contains(messageObj)) {
                                 messages.add(messageObj);
                             }
                         }
@@ -94,7 +88,6 @@ public class ChatActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }
@@ -111,5 +104,4 @@ public class ChatActivity extends AppCompatActivity {
         imageBack.setOnClickListener(v -> onBackPressed());
         layoutSend.setOnClickListener(v -> sendMessage());
     }
-
 }
