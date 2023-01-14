@@ -15,9 +15,9 @@
             android:id="@+id/profilePicture"
             android:layout_width="match_parent"
             android:layout_height="300dp"
+            android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_baseline_person_24"
-            android:adjustViewBounds="true" />
+            android:src="@drawable/ic_baseline_person_24" />
 
         <TextView
             android:id="@+id/name"
@@ -44,8 +44,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/circular_border_grey"
                 android:orientation="vertical"
-                android:padding="14dp"
-                >
+                android:padding="14dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -60,9 +59,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/bio"
+                            android:textColor="@color/black"
                             android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/black"/>
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
@@ -73,7 +72,7 @@
                         android:layout_marginTop="10dp"
                         android:text="@string/my_description"
                         android:textColor="@color/black"
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -94,9 +93,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/contact_info"
+                        android:textColor="@color/black"
                         android:textSize="17sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"/>
+                        android:textStyle="bold" />
 
 
                 </LinearLayout>
@@ -118,10 +117,10 @@
                         <ImageView
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:paddingBottom="8dp"
                             android:paddingTop="8dp"
                             android:paddingRight="8dp"
-                            android:src="@drawable/ic_baseline_call_24"/>
+                            android:paddingBottom="8dp"
+                            android:src="@drawable/ic_baseline_call_24" />
 
                         <TextView
                             android:id="@+id/phone"
@@ -129,7 +128,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:text="0123 456 789"
-                            android:textSize="15sp"/>
+                            android:textSize="15sp" />
 
                     </LinearLayout>
 
@@ -146,10 +145,10 @@
                     <ImageView
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:paddingBottom="8dp"
                         android:paddingTop="8dp"
                         android:paddingRight="8dp"
-                        android:src="@drawable/ic_baseline_email_24"/>
+                        android:paddingBottom="8dp"
+                        android:src="@drawable/ic_baseline_email_24" />
 
                     <TextView
                         android:id="@+id/email"
@@ -157,7 +156,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:text="john@gmail.com"
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
 
                 </LinearLayout>
 
@@ -173,9 +172,9 @@
                     <ImageView
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:paddingBottom="8dp"
                         android:paddingTop="8dp"
                         android:paddingRight="8dp"
+                        android:paddingBottom="8dp"
                         android:src="@drawable/ic_baseline_location_on_24" />
 
                     <TextView
@@ -184,7 +183,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:text="Earth, Solar System"
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
 
                 </LinearLayout>
 
@@ -195,7 +194,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="365dp"
-                android:text="Chat"/>
+                android:text="Chat" />
 
 
         </LinearLayout>
