@@ -1,5 +1,6 @@
 package com.example.firebase_chat.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -13,7 +14,11 @@ import com.example.firebase_chat.utilities.Dao;
 import com.example.firebase_chat.R;
 import com.example.firebase_chat.utilities.User;
 import com.example.firebase_chat.utilities.UserDao;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.regex.Pattern;
 
@@ -86,7 +91,20 @@ public class RegisterUserActivity extends AppCompatActivity {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        // Sign up success
+                        // Set Firebase display name
+                        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                .setDisplayName(name).build();
+                        firebaseUser.updateProfile(profileUpdates)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            System.out.println("Firebase display name set");
+                                        }
+                                    }
+                                });
+
                         User user = new User(name, email, mAuth.getCurrentUser().getUid());
                         userDao.add(user);
                         Toast.makeText(RegisterUserActivity.this, "Registration success.",

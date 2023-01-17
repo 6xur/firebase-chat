@@ -9,6 +9,8 @@ public class Message {
     public String senderName, receiverName;
     public String timestamp;
 
+    public Message() {}
+
     public Message(String senderUid, String senderName, String receiverUid, String receiverName, String message) {
         this.senderUid = senderUid;
         this.senderName = senderName;
