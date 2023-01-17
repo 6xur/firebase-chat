@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 
 import com.example.firebase_chat.R;
 import com.example.firebase_chat.adapters.RecentConversationsAdapter;
-import com.example.firebase_chat.utilities.Constants;
 import com.example.firebase_chat.utilities.Message;
 import com.example.firebase_chat.utilities.MessageDao;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,13 +19,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 public class ChatFragment extends Fragment {
 
@@ -46,7 +45,7 @@ public class ChatFragment extends Fragment {
 
         // Set recent conversation adapter
         conversations = new ArrayList<>();
-        System.out.println("current user " + FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+        System.out.println("current user " + Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName());
         conversationsAdapter = new RecentConversationsAdapter(conversations, FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
         conversationsRecyclerView = view.findViewById(R.id.conversationRecyclerView);
         conversationsRecyclerView.setAdapter(conversationsAdapter);
@@ -78,6 +77,7 @@ public class ChatFragment extends Fragment {
                 // Sort messages by timestamp
                 conversations.sort(new Comparator<Message>() {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss");
+
                     @Override
                     public int compare(Message m1, Message m2) {
                         try {
@@ -99,8 +99,6 @@ public class ChatFragment extends Fragment {
 
             }
         });
-
-        Message m = new Message("a","a","b","b","hello","2023");
 
         return view;
     }
