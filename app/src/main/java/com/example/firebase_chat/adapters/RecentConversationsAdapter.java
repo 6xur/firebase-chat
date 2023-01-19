@@ -70,7 +70,11 @@ public class RecentConversationsAdapter extends  RecyclerView.Adapter<RecentConv
         void setData(Message message) {
             // TODO: Load image (DONE)
             binding.nameText.setText(getOtherUserName(message.senderName, message.receiverName));
-            binding.recentMessageText.setText(message.message);
+            if(message.senderUid.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                binding.recentMessageText.setText("You: " + message.message);
+            } else {
+                binding.recentMessageText.setText(message.message);
+            }
             String Uid = getOtherUserUid(message.senderUid, message.receiverUid);
             // Load images
             UserDao userDao = new UserDao();
