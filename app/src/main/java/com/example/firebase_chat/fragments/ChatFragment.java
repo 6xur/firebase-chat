@@ -58,7 +58,7 @@ public class ChatFragment extends Fragment {
             mainUser.Uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
             mainUser.name = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
             User friend = new User();
-            friend.Uid = getOtherUserUid(message.senderUid, message.receiverUid);
+            friend.Uid = conversationsAdapter.getOtherUserUid(message.senderUid, message.receiverUid);
             friend.name = conversationsAdapter.getOtherUserName(message.senderName, message.receiverName);
             intent.putExtra(Constants.KEY_USER, mainUser);
             intent.putExtra(Constants.KEY_FRIEND, friend);
@@ -120,9 +120,4 @@ public class ChatFragment extends Fragment {
         return view;
     }
 
-    public String getOtherUserUid(String Uid1, String Uid2) {
-        String mainUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        if (Uid1.equals(mainUid)) return Uid2;
-        if (Uid2.equals(mainUid)) return Uid1;
-        return null;
-    }}
+}

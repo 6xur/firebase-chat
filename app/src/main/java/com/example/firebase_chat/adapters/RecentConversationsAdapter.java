@@ -7,7 +7,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.firebase_chat.databinding.ItemContainerRecentConversationBinding;
+import com.example.firebase_chat.utilities.Constants;
 import com.example.firebase_chat.utilities.Message;
+import com.example.firebase_chat.utilities.User;
+import com.example.firebase_chat.utilities.UserDao;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -60,9 +68,30 @@ public class RecentConversationsAdapter extends  RecyclerView.Adapter<RecentConv
         }
 
         void setData(Message message) {
-            // TODO: Load image
+            // TODO: Load image (DONE)
             binding.nameText.setText(getOtherUserName(message.senderName, message.receiverName));
             binding.recentMessageText.setText(message.message);
+            String Uid = getOtherUserUid(message.senderUid, message.receiverUid);
+            // Load images
+            UserDao userDao = new UserDao();
+            userDao.getDatabaseRef().addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        if (ds.getKey().equals(Uid)) {
+                            String imgUri = ds.child(Constants.KEY_IMG_URI).getValue(String.class);
+                            if (imgUri != null) {
+                                Picasso.get().load(imgUri).into(binding.profileImage);
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
         }
 
         public void bind(final Message message, final RecentConversationsAdapter.OnConversationClickListener listener) {
@@ -73,6 +102,13 @@ public class RecentConversationsAdapter extends  RecyclerView.Adapter<RecentConv
     public String getOtherUserName(String name1, String name2) {
         if (name1.equals(mainUserName)) return name2;
         if (name2.equals(mainUserName)) return name1;
+        return null;
+    }
+
+    public String getOtherUserUid(String Uid1, String Uid2) {
+        String mainUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        if (Uid1.equals(mainUid)) return Uid2;
+        if (Uid2.equals(mainUid)) return Uid1;
         return null;
     }
 }
