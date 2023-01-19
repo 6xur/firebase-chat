@@ -1,5 +1,6 @@
 package com.example.firebase_chat.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,9 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.firebase_chat.R;
+import com.example.firebase_chat.activities.ChatActivity;
 import com.example.firebase_chat.adapters.RecentConversationsAdapter;
+import com.example.firebase_chat.adapters.UsersAdapter;
+import com.example.firebase_chat.utilities.Constants;
 import com.example.firebase_chat.utilities.Message;
 import com.example.firebase_chat.utilities.MessageDao;
+import com.example.firebase_chat.utilities.User;
+import com.example.firebase_chat.utilities.UserDao;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -46,7 +52,18 @@ public class ChatFragment extends Fragment {
         // Set recent conversation adapter
         conversations = new ArrayList<>();
         System.out.println("current user " + Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName());
-        conversationsAdapter = new RecentConversationsAdapter(conversations, FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+        conversationsAdapter = new RecentConversationsAdapter(conversations, FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), message -> {
+            Intent intent = new Intent(getActivity(), ChatActivity.class);
+            User mainUser = new User();
+            mainUser.Uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            mainUser.name = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+            User friend = new User();
+            friend.Uid = getOtherUserUid(message.senderUid, message.receiverUid);
+            friend.name = conversationsAdapter.getOtherUserName(message.senderName, message.receiverName);
+            intent.putExtra(Constants.KEY_USER, mainUser);
+            intent.putExtra(Constants.KEY_FRIEND, friend);
+            startActivity(intent);
+        });
         conversationsRecyclerView = view.findViewById(R.id.conversationRecyclerView);
         conversationsRecyclerView.setAdapter(conversationsAdapter);
 
@@ -102,4 +119,10 @@ public class ChatFragment extends Fragment {
 
         return view;
     }
-}
+
+    public String getOtherUserUid(String Uid1, String Uid2) {
+        String mainUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        if (Uid1.equals(mainUid)) return Uid2;
+        if (Uid2.equals(mainUid)) return Uid1;
+        return null;
+    }}

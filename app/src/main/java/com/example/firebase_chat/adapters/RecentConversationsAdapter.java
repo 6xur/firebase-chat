@@ -13,12 +13,18 @@ import java.util.List;
 
 public class RecentConversationsAdapter extends  RecyclerView.Adapter<RecentConversationsAdapter.ConversionViewHolder> {
 
+    public interface OnConversationClickListener {
+        void onItemClick(Message message);
+    }
+
     private final List<Message> messages;
     String mainUserName;
+    private final OnConversationClickListener listener;
 
-    public RecentConversationsAdapter(List<Message> messages, String mainUserName) {
+    public RecentConversationsAdapter(List<Message> messages, String mainUserName, OnConversationClickListener listener) {
         this.messages = messages;
         this.mainUserName = mainUserName;
+        this.listener = listener;
     }
 
     @NonNull
@@ -36,6 +42,7 @@ public class RecentConversationsAdapter extends  RecyclerView.Adapter<RecentConv
     @Override
     public void onBindViewHolder(@NonNull ConversionViewHolder holder, int position) {
         holder.setData(messages.get(position));
+        holder.bind(messages.get(position), listener);
     }
 
     @Override
@@ -58,11 +65,14 @@ public class RecentConversationsAdapter extends  RecyclerView.Adapter<RecentConv
             binding.recentMessageText.setText(message.message);
         }
 
-        public String getOtherUserName(String name1, String name2) {
-            if (name1.equals(mainUserName)) return name2;
-            if (name2.equals(mainUserName)) return name1;
-            return null;
+        public void bind(final Message message, final RecentConversationsAdapter.OnConversationClickListener listener) {
+            itemView.setOnClickListener(view -> listener.onItemClick(message));
         }
+    }
 
+    public String getOtherUserName(String name1, String name2) {
+        if (name1.equals(mainUserName)) return name2;
+        if (name2.equals(mainUserName)) return name1;
+        return null;
     }
 }
