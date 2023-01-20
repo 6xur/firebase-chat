@@ -1,15 +1,15 @@
 package com.example.firebase_chat.activities;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
-import android.os.Bundle;
-
-import com.example.firebase_chat.fragments.RecentConversationFragment;
-import com.example.firebase_chat.fragments.UsersFragment;
-import com.example.firebase_chat.fragments.ProfileFragment;
 import com.example.firebase_chat.R;
 import com.example.firebase_chat.databinding.ActivityHomeBinding;
+import com.example.firebase_chat.fragments.ProfileFragment;
+import com.example.firebase_chat.fragments.RecentConversationFragment;
+import com.example.firebase_chat.fragments.UsersFragment;
 import com.example.firebase_chat.utilities.Constants;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 

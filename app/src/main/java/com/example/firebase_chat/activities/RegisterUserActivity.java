@@ -1,8 +1,5 @@
 package com.example.firebase_chat.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -10,8 +7,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.firebase_chat.utilities.Dao;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.firebase_chat.R;
+import com.example.firebase_chat.utilities.Dao;
 import com.example.firebase_chat.utilities.User;
 import com.example.firebase_chat.utilities.UserDao;
 import com.google.android.gms.tasks.OnCompleteListener;

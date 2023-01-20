@@ -18,6 +18,7 @@ import com.example.firebase_chat.utilities.Message;
 import com.example.firebase_chat.utilities.MessageDao;
 import com.example.firebase_chat.utilities.User;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -28,32 +29,31 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 
 public class RecentConversationFragment extends Fragment {
 
     private List<Message> conversations;
     private RecentConversationsAdapter conversationsAdapter;
     private RecyclerView conversationsRecyclerView;
+    private FirebaseUser firebaseUser;
 
     public RecentConversationFragment() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recent_conversation, container, false);
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         // Set recent conversation adapter
         conversations = new ArrayList<>();
-        System.out.println("current user " + Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName());
         conversationsAdapter = new RecentConversationsAdapter(conversations, message -> {
             Intent intent = new Intent(getActivity(), ChatActivity.class);
             User mainUser = new User();
-            mainUser.Uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            mainUser.name = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+            mainUser.Uid = firebaseUser.getUid();
+            mainUser.name = firebaseUser.getDisplayName();
             User friend = new User();
             friend.Uid = conversationsAdapter.getOtherUserUid(message.senderUid, message.receiverUid);
             friend.name = conversationsAdapter.getOtherUserName(message.senderName, message.receiverName);
@@ -71,13 +71,11 @@ public class RecentConversationFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 conversations.clear();
                 for (DataSnapshot conversation : snapshot.getChildren()) {
-                    if (!conversation.getKey().contains(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                    if (conversation.getKey() != null && !conversation.getKey().contains(firebaseUser.getUid())) {
                         continue;
                     }
-                    // System.out.println(conversation.getKey());
                     Message messageObj = new Message();
                     for (DataSnapshot message : conversation.getChildren()) {
-                        // System.out.println(message.getKey());
                         messageObj.message = message.child("message").getValue(String.class);
                         messageObj.receiverName = message.child("receiverName").getValue(String.class);
                         messageObj.receiverUid = message.child("receiverUid").getValue(String.class);
@@ -116,5 +114,4 @@ public class RecentConversationFragment extends Fragment {
 
         return view;
     }
-
 }
