@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 
-import com.example.firebase_chat.fragments.ChatFragment;
+import com.example.firebase_chat.fragments.RecentConversationFragment;
 import com.example.firebase_chat.fragments.UsersFragment;
 import com.example.firebase_chat.fragments.ProfileFragment;
 import com.example.firebase_chat.R;
@@ -91,7 +91,7 @@ public class HomeActivity extends AppCompatActivity {
                 if (fragmentManager.findFragmentByTag("chat") != null) {
                     fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("chat")).commit();
                 } else {
-                    fragmentManager.beginTransaction().add(R.id.frameLayout, new ChatFragment(), "chat").commit();
+                    fragmentManager.beginTransaction().add(R.id.frameLayout, new RecentConversationFragment(), "chat").commit();
                 }
                 if (fragmentManager.findFragmentByTag(Constants.KEY_PROFILE) != null) {
                     fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag(Constants.KEY_PROFILE)).commit();

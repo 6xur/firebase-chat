@@ -31,14 +31,12 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
 
     public static class UsersViewHolder extends RecyclerView.ViewHolder {
         private final TextView nameText;
-        private final TextView emailText;
         private final ImageView profileImage;
 
         public UsersViewHolder(final View view) {
             super(view);
             setIsRecyclable(false);  // do not recycle otherwise the images would be set wrong
             nameText = view.findViewById(R.id.nameText);
-            emailText = view.findViewById(R.id.emailText);
             profileImage = view.findViewById(R.id.profileImage);
         }
 
@@ -57,10 +55,8 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
     @Override
     public void onBindViewHolder(@NonNull UsersAdapter.UsersViewHolder holder, int position) {
         String name = users.get(position).name;
-        String email = users.get(position).email;
         String imgUri = users.get(position).imgUri;
         holder.nameText.setText(name);
-        holder.emailText.setText(email);
         if (imgUri != null) {
             Picasso.get().load(imgUri).into(holder.profileImage);
         }

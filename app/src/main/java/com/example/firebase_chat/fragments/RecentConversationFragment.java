@@ -2,24 +2,21 @@ package com.example.firebase_chat.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.example.firebase_chat.R;
 import com.example.firebase_chat.activities.ChatActivity;
 import com.example.firebase_chat.adapters.RecentConversationsAdapter;
-import com.example.firebase_chat.adapters.UsersAdapter;
 import com.example.firebase_chat.utilities.Constants;
 import com.example.firebase_chat.utilities.Message;
 import com.example.firebase_chat.utilities.MessageDao;
 import com.example.firebase_chat.utilities.User;
-import com.example.firebase_chat.utilities.UserDao;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,13 +30,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
-public class ChatFragment extends Fragment {
+public class RecentConversationFragment extends Fragment {
 
     private List<Message> conversations;
     private RecentConversationsAdapter conversationsAdapter;
     private RecyclerView conversationsRecyclerView;
 
-    public ChatFragment() {
+    public RecentConversationFragment() {
         // Required empty public constructor
     }
 
@@ -47,12 +44,12 @@ public class ChatFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_chat, container, false);
+        View view = inflater.inflate(R.layout.fragment_recent_conversation, container, false);
 
         // Set recent conversation adapter
         conversations = new ArrayList<>();
         System.out.println("current user " + Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName());
-        conversationsAdapter = new RecentConversationsAdapter(conversations, FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), message -> {
+        conversationsAdapter = new RecentConversationsAdapter(conversations, message -> {
             Intent intent = new Intent(getActivity(), ChatActivity.class);
             User mainUser = new User();
             mainUser.Uid = FirebaseAuth.getInstance().getCurrentUser().getUid();

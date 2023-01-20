@@ -9,15 +9,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.firebase_chat.databinding.ItemContainerRecentConversationBinding;
 import com.example.firebase_chat.utilities.Constants;
 import com.example.firebase_chat.utilities.Message;
-import com.example.firebase_chat.utilities.User;
 import com.example.firebase_chat.utilities.UserDao;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.Objects;
 
 public class RecentConversationsAdapter extends  RecyclerView.Adapter<RecentConversationsAdapter.ConversionViewHolder> {
 
@@ -26,13 +27,13 @@ public class RecentConversationsAdapter extends  RecyclerView.Adapter<RecentConv
     }
 
     private final List<Message> messages;
-    String mainUserName;
     private final OnConversationClickListener listener;
+    private final FirebaseUser mainUser;
 
-    public RecentConversationsAdapter(List<Message> messages, String mainUserName, OnConversationClickListener listener) {
+    public RecentConversationsAdapter(List<Message> messages, OnConversationClickListener listener) {
         this.messages = messages;
-        this.mainUserName = mainUserName;
         this.listener = listener;
+        this.mainUser = FirebaseAuth.getInstance().getCurrentUser();
     }
 
     @NonNull
@@ -68,21 +69,21 @@ public class RecentConversationsAdapter extends  RecyclerView.Adapter<RecentConv
         }
 
         void setData(Message message) {
-            // TODO: Load image (DONE)
             binding.nameText.setText(getOtherUserName(message.senderName, message.receiverName));
-            if(message.senderUid.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-                binding.recentMessageText.setText("You: " + message.message);
+            if (message.senderUid.equals(mainUser.getUid())) {
+                String mainUserMessage = "You: " + message.message;
+                binding.recentMessageText.setText(mainUserMessage);
             } else {
                 binding.recentMessageText.setText(message.message);
             }
+            // Load other user's profile image
             String Uid = getOtherUserUid(message.senderUid, message.receiverUid);
-            // Load images
             UserDao userDao = new UserDao();
             userDao.getDatabaseRef().addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for (DataSnapshot ds : snapshot.getChildren()) {
-                        if (ds.getKey().equals(Uid)) {
+                        if (Objects.equals(ds.getKey(), Uid)) {
                             String imgUri = ds.child(Constants.KEY_IMG_URI).getValue(String.class);
                             if (imgUri != null) {
                                 Picasso.get().load(imgUri).into(binding.profileImage);
@@ -104,13 +105,14 @@ public class RecentConversationsAdapter extends  RecyclerView.Adapter<RecentConv
     }
 
     public String getOtherUserName(String name1, String name2) {
+        String mainUserName = mainUser.getDisplayName();
         if (name1.equals(mainUserName)) return name2;
         if (name2.equals(mainUserName)) return name1;
         return null;
     }
 
     public String getOtherUserUid(String Uid1, String Uid2) {
-        String mainUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String mainUid = mainUser.getUid();
         if (Uid1.equals(mainUid)) return Uid2;
         if (Uid2.equals(mainUid)) return Uid1;
         return null;
