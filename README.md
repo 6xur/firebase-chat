@@ -12,11 +12,3 @@ This is a one-to-one Android messaging app built to practice my skills in Androi
   <img width="250" src="img/user.png">
   <img width="250" src="img/chat.png">
 </p>
-
-## Firebase Services
-
-- Realtime Database - Stores user info and messages
-
-- Authentication - For creating account with Email and password
-
-- Storage - Stores user-uploaded profile images
